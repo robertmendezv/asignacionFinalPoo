@@ -2,7 +2,7 @@ package logico;
 
 import java.util.ArrayList; 
 
-public class Estadisticas {
+public class Estadistica {
     private int puntos;
     private int rebotes;
     private int asistencias;
@@ -13,7 +13,7 @@ public class Estadisticas {
 	private float promasistencias;
 	private float promaccionesdefensivas;
 	
-	public Estadisticas(int puntos, int rebotes, int asistencias, int accionesdefensivas,
+	public Estadistica(int puntos, int rebotes, int asistencias, int accionesdefensivas,
 			ArrayList<Jugador> misjugadores, float prompuntos, float promrebotes, float promasistencias,
 			float promaccionesdefensivas) {
 		super();

@@ -5,8 +5,8 @@ public class Jugador {
 	private int edad;
 	private String posicionJugador;
 	private int numJugador;
-	private Estadisticas estadistica;
-	public Jugador(String nombreJugador, int edad, String posicionJugador, int numJugador, Estadisticas estadisticas) {
+	private Estadistica estadistica;
+	public Jugador(String nombreJugador, int edad, String posicionJugador, int numJugador, Estadistica estadisticas) {
 		super();
 		this.nombreJugador = nombreJugador;
 		this.edad = edad;
@@ -38,10 +38,10 @@ public class Jugador {
 	public void setNumJugador(int numJugador) {
 		this.numJugador = numJugador;
 	}
-	public Estadisticas getEstadistica() {
+	public Estadistica getEstadistica() {
 		return estadistica;
 	}
-	public void setEstadistica(Estadisticas estadistica) {
+	public void setEstadistica(Estadistica estadistica) {
 		this.estadistica = estadistica;
 	}
 
