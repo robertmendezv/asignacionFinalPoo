@@ -6,14 +6,16 @@ public class Jugador {
 	private String posicionJugador;
 	private int numJugador;
 	private Estadistica estadistica;
-	public Jugador(String nombreJugador, int edad, String posicionJugador, int numJugador, Estadistica estadisticas) {
-		super();
-		this.nombreJugador = nombreJugador;
-		this.edad = edad;
-		this.posicionJugador = posicionJugador;
-		this.numJugador = numJugador;
-		this.estadistica = estadistica;
-	}
+	
+    public Jugador(String nombreJugador, int edad, String posicionJugador, 
+            int numJugador, Estadistica estadistica) {
+    	this.nombreJugador = nombreJugador;
+    	this.edad = edad;
+    	this.posicionJugador = posicionJugador;
+    	this.numJugador = numJugador;
+    	this.estadistica = estadistica;
+    }
+    
 	public String getNombreJugador() {
 		return nombreJugador;
 	}
