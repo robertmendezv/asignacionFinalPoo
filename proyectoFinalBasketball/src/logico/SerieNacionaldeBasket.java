@@ -3,15 +3,40 @@ package logico;
 import java.util.ArrayList;
 
 public class SerieNacionaldeBasket {
+    
+    private static SerieNacionaldeBasket instance = null;
+    
+    
     private ArrayList<Equipo> equipos;
     private ArrayList<Partido> partidos;
     private ArrayList<Lesion> lesiones;
 
+    public ArrayList<Equipo> getEquipos() {
+        return new ArrayList<Equipo>(equipos);
+    }
+
+    public ArrayList<Partido> getPartidos() {
+        return new ArrayList<Partido>(partidos);
+    }
+
+    public ArrayList<Lesion> getLesiones() {
+        return new ArrayList<Lesion>(lesiones);
+    }
+    
     public SerieNacionaldeBasket() {
         this.equipos = new ArrayList<Equipo>();
         this.partidos = new ArrayList<Partido>();
         this.lesiones = new ArrayList<Lesion>();
     }
+
+
+    public static SerieNacionaldeBasket getInstance() {
+        if (instance == null) {
+            instance = new SerieNacionaldeBasket();
+        }
+        return instance;
+    }
+
 
     public boolean registrarEquipo(Equipo equipo) {
         if(equipo != null && !existeEquipo(equipo.getNombreEquipo())) {
@@ -48,6 +73,7 @@ public class SerieNacionaldeBasket {
         }
         return false;
     }
+
 
     public boolean programarPartido(Partido partido) {
         if(partido != null) {
@@ -139,16 +165,7 @@ public class SerieNacionaldeBasket {
         return mvp;
     }
 
-    public ArrayList<Equipo> getEquipos() {
-        return new ArrayList<Equipo>(equipos);
-    }
 
-    public ArrayList<Partido> getPartidos() {
-        return new ArrayList<Partido>(partidos);
-    }
-
-    public ArrayList<Lesion> getLesiones() {
-        return new ArrayList<Lesion>(lesiones);
-    }
+    
     
 }
