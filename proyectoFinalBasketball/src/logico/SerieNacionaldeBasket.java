@@ -1,15 +1,29 @@
 package logico;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class SerieNacionaldeBasket {
     
     private static SerieNacionaldeBasket instance = null;
-    
-    
     private ArrayList<Equipo> equipos;
     private ArrayList<Partido> partidos;
     private ArrayList<Lesion> lesiones;
+
+    public SerieNacionaldeBasket() {
+        this.equipos = new ArrayList<Equipo>();
+        this.partidos = new ArrayList<Partido>();
+        this.lesiones = new ArrayList<Lesion>();
+    }
+    
+    
+
+    public static SerieNacionaldeBasket getInstance() {
+        if (instance == null) {
+            instance = new SerieNacionaldeBasket();
+        }
+        return instance;
+    }
 
     public ArrayList<Equipo> getEquipos() {
         return new ArrayList<Equipo>(equipos);
@@ -22,27 +36,18 @@ public class SerieNacionaldeBasket {
     public ArrayList<Lesion> getLesiones() {
         return new ArrayList<Lesion>(lesiones);
     }
-    
-    public SerieNacionaldeBasket() {
-        this.equipos = new ArrayList<Equipo>();
-        this.partidos = new ArrayList<Partido>();
-        this.lesiones = new ArrayList<Lesion>();
-    }
-
-
-    public static SerieNacionaldeBasket getInstance() {
-        if (instance == null) {
-            instance = new SerieNacionaldeBasket();
-        }
-        return instance;
-    }
-
 
     public boolean registrarEquipo(Equipo equipo) {
         if(equipo != null && !existeEquipo(equipo.getNombreEquipo())) {
             return equipos.add(equipo);
         }
         return false;
+    }
+    
+    public void agregarEquipo(Equipo equipo) {
+        if (equipo != null && !equipos.contains(equipo)) {
+            equipos.add(equipo);
+        }
     }
 
     public boolean eliminarEquipo(String nombreEquipo) {
@@ -52,8 +57,7 @@ public class SerieNacionaldeBasket {
 
     public Equipo buscarEquipoPorNombre(String nombreBuscado) {
         for (Equipo equipo : equipos) {
-            String nombreEquipo = equipo.getNombreEquipo();
-            if (nombreEquipo.equalsIgnoreCase(nombreBuscado)) {
+            if (equipo.getNombreEquipo().equalsIgnoreCase(nombreBuscado)) {
                 return equipo;
             }
         }
@@ -65,107 +69,111 @@ public class SerieNacionaldeBasket {
     }
 
     public boolean agregarJugadorAEquipo(Jugador jugador, String nombreEquipo) {
-        if(jugador != null && nombreEquipo != null) {
-            Equipo equipo = buscarEquipoPorNombre(nombreEquipo);
-            if(equipo != null && equipo.getMisjugadores() != null) {
-                return equipo.getMisjugadores().add(jugador);
-            }
+        Equipo equipo = buscarEquipoPorNombre(nombreEquipo);
+        if(equipo != null && !equipo.getMisjugadores().contains(jugador)) {
+            return equipo.getMisjugadores().add(jugador);
         }
         return false;
     }
 
+    public ArrayList<Partido> getPartidosPorFecha(LocalDate fecha) {
+        ArrayList<Partido> partidosFecha = new ArrayList<>();
+        if(fecha == null) return partidosFecha; 
 
+        for(Partido p : partidos) {
+            if(fecha.equals(p.getFecha())) { 
+                partidosFecha.add(p);
+            }
+        }
+        return partidosFecha;
+    }
+    
+    public boolean registrarResultado(String nombreEquipoLocal, String nombreEquipoVisitante, 
+            int puntosLocal, int puntosVisitante) {
+    	Partido partido = buscarPartido(nombreEquipoLocal, nombreEquipoVisitante);
+    	if (partido != null) {
+    		partido.setPuntosLocal(puntosLocal);
+    		partido.setPuntosVisitante(puntosVisitante);
+    		partido.setResultado(puntosLocal + "-" + puntosVisitante);
+    		partido.setEstado("Finalizado");
+    		return true;
+    	}
+    	return false;
+    }
+    
     public boolean programarPartido(Partido partido) {
-        if(partido != null) {
+        if(partido != null && !partidos.contains(partido)) {
             return partidos.add(partido);
         }
         return false;
     }
 
-    public boolean registrarResultadoPartido(String equipoLocal, String equipoVisitante, 
-                                           int puntosLocal, int puntosVisitante) {
-        Partido partido = buscarPartido(equipoLocal, equipoVisitante);
-        if(partido != null) {
-            partido.setPuntosLocal(puntosLocal);
-            partido.setPuntosVisitante(puntosVisitante);
-            partido.setResultado(puntosLocal + "-" + puntosVisitante);
-            return true;
-        }
-        return false;
+    public boolean eliminarPartido(Partido partido) {
+        return partidos.remove(partido);
     }
 
-    private Partido buscarPartido(String equipoLocal, String equipoVisitante) {
+
+    public Partido buscarPartido(String equipoLocal, String equipoVisitante) {
         for (Partido partido : partidos) {
-            String local = partido.getEquipoLocal().getNombreEquipo();
-            String visitante = partido.getEquipoVisitante().getNombreEquipo();
-            
-            if (local.equalsIgnoreCase(equipoLocal) && 
-                visitante.equalsIgnoreCase(equipoVisitante)) {
+            if (partido.getEquipoLocal().getNombreEquipo().equalsIgnoreCase(equipoLocal) && 
+                partido.getEquipoVisitante().getNombreEquipo().equalsIgnoreCase(equipoVisitante)) {
                 return partido;
             }
         }
         return null;
     }
-
-    public float calcularPromedioPuntos(Jugador jugador) {
-        int partidosJugados = contarPartidosJugados(jugador);
-        return partidosJugados > 0 ? jugador.getEstadistica().getPuntos() / (float)partidosJugados : 0;
-    }
-
-    public float calcularPromedioRebotes(Jugador jugador) {
-        int partidosJugados = contarPartidosJugados(jugador);
-        return partidosJugados > 0 ? jugador.getEstadistica().getRebotes() / (float)partidosJugados : 0;
-    }
-
-    public float calcularPromedioAsistencias(Jugador jugador) {
-        int partidosJugados = contarPartidosJugados(jugador);
-        return partidosJugados > 0 ? jugador.getEstadistica().getAsistencias() / (float)partidosJugados : 0;
+    
+    public ArrayList<Partido> getPartidosPorEquipo(String nombreEquipo) {
+        ArrayList<Partido> partidosEquipo = new ArrayList<>();
+        for(Partido p : partidos) {
+            if(p.getEquipoLocal().getNombreEquipo().equalsIgnoreCase(nombreEquipo) || 
+               p.getEquipoVisitante().getNombreEquipo().equalsIgnoreCase(nombreEquipo)) {
+                partidosEquipo.add(p);
+            }
+        }
+        return partidosEquipo;
     }
     
-    public float calcularPromedioAccionesDefensivas(Jugador jugador) {
-        int partidosJugados = contarPartidosJugados(jugador);
-        return partidosJugados > 0 ? jugador.getEstadistica().getAccionesDefensivas() / (float)partidosJugados : 0;
+    private boolean existePartido(Partido partido) {
+        for(Partido p : partidos) {
+            if(p.getEquipoLocal().equals(partido.getEquipoLocal()) && 
+               p.getEquipoVisitante().equals(partido.getEquipoVisitante()) &&
+               p.getFecha().equals(partido.getFecha())) {
+                return true;
+            }
+        }
+        return false;
     }
-
+    
+    public void agregarPartido(Partido partido) {
+        if (partido != null) {
+            
+            if (equipos.contains(partido.getEquipoLocal()) && 
+                equipos.contains(partido.getEquipoVisitante())) {
+                if (!partidos.contains(partido)) {
+                    partidos.add(partido);
+                } else {
+                    throw new IllegalArgumentException("El partido ya está registrado");
+                }
+            } else {
+                throw new IllegalArgumentException("Uno o ambos equipos no están registrados");
+            }
+        }
+    }
+    
+    
+  
     private int contarPartidosJugados(Jugador jugador) {
         int contador = 0;
         for(Partido p : partidos) {
-            if(p.getEquipoLocal().getMisjugadores().contains(jugador) || 
-               p.getEquipoVisitante().getMisjugadores().contains(jugador)) {
+            if(p.participaJugador(jugador)) {
                 contador++;
             }
         }
         return contador;
     }
 
-    public Jugador MVP() {
-        Jugador mvp = null;
-        float maxPuntaje = -1;
-
-        for(Equipo equipo : this.equipos) { 
-            if(equipo != null) {
-                ArrayList<Jugador> jugadores = equipo.getMisjugadores();
-                if(jugadores != null) {
-                    for(Jugador jugador : jugadores) {
-                        if(jugador != null && jugador.getEstadistica() != null) {
-                            float puntajeTotal = calcularPromedioPuntos(jugador) 
-                                              + calcularPromedioRebotes(jugador)
-                                              + calcularPromedioAsistencias(jugador)
-                                              + calcularPromedioAccionesDefensivas(jugador);
-                            
-                            if(puntajeTotal > maxPuntaje) {
-                                maxPuntaje = puntajeTotal;
-                                mvp = jugador;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        return mvp;
+    public boolean registrarLesion(Lesion lesion) {
+        return lesion != null && lesiones.add(lesion);
     }
-
-
-    
-    
 }

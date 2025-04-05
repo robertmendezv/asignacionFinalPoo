@@ -1,83 +1,83 @@
 package logico;
 
-import java.util.Date;
-
+import java.time.LocalDate;
+import java.time.LocalTime;
 public class Partido {
-	
-	private int puntosLocal;
-	private int puntosVisitante;
-	private Date fecha;
-	private Equipo equipoLocal;
-	private Equipo equipoVisitante;
-	private String resultado;
-	private String estadio;
-	
-	public Partido(int puntosLocal, int puntosVisitante, Date fecha, Equipo equipoLocal, Equipo equipoVisitante,
-			String resultado, String estadio) {
-		super();
-		this.puntosLocal = puntosLocal;
-		this.puntosVisitante = puntosVisitante;
-		this.fecha = fecha;
-		this.equipoLocal = equipoLocal;
-		this.equipoVisitante = equipoVisitante;
-		this.resultado = resultado;
-		this.estadio = estadio;
-	}
-
-	public int getPuntosLocal() {
-		return puntosLocal;
-	}
-
-	public void setPuntosLocal(int puntosLocal) {
-		this.puntosLocal = puntosLocal;
-	}
-
-	public int getPuntosVisitante() {
-		return puntosVisitante;
-	}
-
-	public void setPuntosVisitante(int puntosVisitante) {
-		this.puntosVisitante = puntosVisitante;
-	}
-
-	public Date getFecha() {
-		return fecha;
-	}
-
-	public void setFecha(Date fecha) {
-		this.fecha = fecha;
-	}
-
-	public Equipo getEquipoLocal() {
-		return equipoLocal;
-	}
-
-	public void setEquipoLocal(Equipo equipoLocal) {
-		this.equipoLocal = equipoLocal;
-	}
-
-	public Equipo getEquipoVisitante() {
-		return equipoVisitante;
-	}
-
-	public void setEquipoVisitante(Equipo equipoVisitante) {
-		this.equipoVisitante = equipoVisitante;
-	}
-
-	public String getResultado() {
-		return resultado;
-	}
-
-	public void setResultado(String resultado) {
-		this.resultado = resultado;
-	}
-
-	public String getEstadio() {
-		return estadio;
-	}
-
-	public void setEstadio(String estadio) {
-		this.estadio = estadio;
-	}
-
+    private Equipo equipoLocal;
+    private Equipo equipoVisitante;
+    private LocalDate fecha;
+    private LocalTime hora;
+    private String estado;
+    private int puntosLocal;
+    private int puntosVisitante;
+    private String resultado;
+    public Partido(Equipo equipoLocal, Equipo equipoVisitante, LocalDate fecha, LocalTime hora) {
+        this.equipoLocal = equipoLocal;
+        this.equipoVisitante = equipoVisitante;
+        this.fecha = fecha;
+        this.hora = hora;
+        this.estado = "Programado"; 
+        this.puntosLocal = 0;
+        this.puntosVisitante = 0;
+        this.resultado = "0-0";
+    }
+    
+    public Equipo getEquipoLocal() {
+        return equipoLocal;
+    }
+    public Equipo getEquipoVisitante() {
+        return equipoVisitante;
+    }
+    public LocalDate getFecha() {
+        return fecha;
+    }
+    public void setFecha(LocalDate fecha) {
+        this.fecha = fecha;
+    }
+    public LocalTime getHora() {
+        return hora;
+    }
+    public void setHora(LocalTime hora) {
+        this.hora = hora;
+    }
+    public String getEstado() {
+        return estado;
+    }
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+    public int getPuntosLocal() {
+        return puntosLocal;
+    }
+    public void setPuntosLocal(int puntosLocal) {
+        this.puntosLocal = puntosLocal;
+    }
+    public int getPuntosVisitante() {
+        return puntosVisitante;
+    }
+    public void setPuntosVisitante(int puntosVisitante) {
+        this.puntosVisitante = puntosVisitante;
+    }
+    public String getResultado() {
+        return resultado;
+    }
+    public void setResultado(String resultado) {
+        this.resultado = resultado;
+    }
+    public void iniciarPartido() {
+        this.estado = "En juego";
+    }
+    public void finalizarPartido(int puntosLocal, int puntosVisitante) {
+        this.estado = "Finalizado";
+        this.puntosLocal = puntosLocal;
+        this.puntosVisitante = puntosVisitante;
+        this.resultado = puntosLocal + "-" + puntosVisitante;
+    }
+    public void cancelarPartido() {
+        this.estado = "Cancelado";
+    }
+    public boolean participaJugador(Jugador jugador) {
+        return equipoLocal.getMisjugadores().contains(jugador) || 
+               equipoVisitante.getMisjugadores().contains(jugador);
+    }
 }
