@@ -1,20 +1,36 @@
 package logico;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-public class SerieNacionaldeBasket {
+
+public class SerieNacionaldeBasket implements Serializable{
     
     private static SerieNacionaldeBasket instance = null;
+    
+    
     private ArrayList<Equipo> equipos;
     private ArrayList<Partido> partidos;
     private ArrayList<Lesion> lesiones;
 
+    //robert
+	private static final long serialVersionUID = 1L;
+    private static SerieNacionaldeBasket serie;
+    private ArrayList<User> misUsers;
+    private ArrayList<Jugador> misJugadores;
+	private static User loginUser;
+	//
+	
+	
+    
     public SerieNacionaldeBasket() {
         this.equipos = new ArrayList<Equipo>();
         this.partidos = new ArrayList<Partido>();
         this.lesiones = new ArrayList<Lesion>();
-    }
+        this.misJugadores = new ArrayList<Jugador>();
+    
+    }	
     
     
 
@@ -153,10 +169,10 @@ public class SerieNacionaldeBasket {
                 if (!partidos.contains(partido)) {
                     partidos.add(partido);
                 } else {
-                    throw new IllegalArgumentException("El partido ya está registrado");
+                    throw new IllegalArgumentException("El partido ya estï¿½ registrado");
                 }
             } else {
-                throw new IllegalArgumentException("Uno o ambos equipos no están registrados");
+                throw new IllegalArgumentException("Uno o ambos equipos no estï¿½n registrados");
             }
         }
     }
@@ -176,4 +192,107 @@ public class SerieNacionaldeBasket {
     public boolean registrarLesion(Lesion lesion) {
         return lesion != null && lesiones.add(lesion);
     }
+    
+    
+    
+    
+    
+    
+// 	3/4/25 1:59pm -robert
+	public void regUser(User user) {
+		misUsers.add(user);
+		
+	}
+	public void setMisUsers(ArrayList<User> misUsers) {
+		this.misUsers = misUsers;
+	}
+	
+	
+	public static User getLoginUser() {
+		return loginUser;
+	}
+
+	public static void setLoginUser(User loginUser) {
+		SerieNacionaldeBasket.loginUser = loginUser;
+	}
+
+	
+	public boolean confirmLogin(String text, String text2) {
+		boolean login = false;
+		for (User user : misUsers) {
+			if(user.getUserName().equals(text) && user.getPassw().equals(text2)){
+				loginUser = user;
+				login = true;
+			}
+		}
+		return login;
+	}
+
+	
+	public static SerieNacionaldeBasket getSerie() {
+		return serie;
+	}
+	
+	public static void setSerie(SerieNacionaldeBasket serie) {
+		SerieNacionaldeBasket.serie = serie;
+	}
+	
+    public User buscarUsuarioPorNombre(String nombreBuscadoUsuario) {
+        for (User user : misUsers) {
+            String nombreUser = user.getUserName();
+            if (nombreUser.equalsIgnoreCase(nombreBuscadoUsuario)) {
+                return user;
+            }
+        }
+        return null;
+    }
+    
+    
+    public boolean registrarUser(User user) {
+        if(user != null && !existeUser( user.getUserName() ) ) {
+            return misUsers.add(user);
+        }
+        return false;
+    }
+    
+    
+    private boolean existeUser(String nombreUser) {
+        return buscarUsuarioPorNombre(nombreUser) != null;
+    }
+    
+    
+    public Jugador buscarJugadorPorNombre(String nombreBuscado) {
+        for (Equipo equipo : equipos) {
+            for (Jugador jugador : equipo.getMisjugadores()) {
+                if (jugador.getNombreJugador().equalsIgnoreCase(nombreBuscado)) {
+                    return jugador;
+                }
+            }
+        }
+        return null;
+    }
+    
+    public ArrayList<Jugador> getTodosJugadores() {
+        ArrayList<Jugador> todosJugadores = new ArrayList<>();
+        for (Equipo equipo : equipos) {
+            todosJugadores.addAll(equipo.getMisjugadores());
+        }
+        return todosJugadores;
+    }
+   
+
+    
+    
+//
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 }
