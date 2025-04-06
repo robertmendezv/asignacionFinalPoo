@@ -73,7 +73,7 @@ public class SerieNacionalBasketball {
         JMenuItem mntmRegistrarEquipo = new JMenuItem("Registrar Equipo");
         mntmRegistrarEquipo.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                RegistrarEquipo dialog = new RegistrarEquipo();
+                RegistrarEquipo dialog = new RegistrarEquipo(null);
                 dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
                 dialog.setVisible(true);
             }

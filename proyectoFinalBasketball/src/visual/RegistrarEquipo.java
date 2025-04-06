@@ -36,7 +36,7 @@ public class RegistrarEquipo extends JDialog {
 	 */
 	public static void main(String[] args) {
 		try {
-			RegistrarEquipo dialog = new RegistrarEquipo();
+			RegistrarEquipo dialog = new RegistrarEquipo(null);
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.setVisible(true);
 		} catch (Exception e) {
@@ -47,8 +47,12 @@ public class RegistrarEquipo extends JDialog {
 	/**
 	 * Create the dialog.
 	 */
-	public RegistrarEquipo() {
-		setTitle("Registrar Equipo");
+	public RegistrarEquipo(Equipo aux) {
+		if(aux == null) {
+			setTitle("Registrar Equipo");
+		}else {
+			setTitle("Modificar Equipo");
+		}
 		setBounds(100, 100, 450, 300);
 		setLocationRelativeTo(null);
 		getContentPane().setLayout(new BorderLayout());
@@ -63,10 +67,17 @@ public class RegistrarEquipo extends JDialog {
 		contentPanel.add(panel_10);
 		panel_10.setLayout(null);
 
-		JLabel lblNewLabel = new JLabel("Registrar Equipo:");
-		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 15));
-		lblNewLabel.setBounds(12, 13, 143, 19);
-		panel_10.add(lblNewLabel);
+		if(aux==null) {
+			JLabel lblNewLabel = new JLabel("Registrar Equipo:");
+			lblNewLabel.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 15));
+			lblNewLabel.setBounds(12, 13, 143, 19);
+			panel_10.add(lblNewLabel);
+		}else {
+			JLabel lblNewLabel = new JLabel("Modificar Equipo:");
+			lblNewLabel.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 15));
+			lblNewLabel.setBounds(12, 13, 143, 19);
+			panel_10.add(lblNewLabel);
+		}
 
 		JLabel lblNewLabel_1 = new JLabel("Nombre del Equipo:");
 		lblNewLabel_1.setBounds(12, 59, 123, 16);
@@ -156,12 +167,22 @@ public class RegistrarEquipo extends JDialog {
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
 				JButton okButton = new JButton("Registrar");
+				if(aux != null) {
+					okButton.setText("Modificar");
+				}
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						Equipo equipo = new Equipo(txtNameEquipo.getText(), txtEntrenador.getText());
-						SerieNacionaldeBasket.getInstance().registrarEquipo(equipo);
-						JOptionPane.showMessageDialog(null, "Operación Satisfactoria", "Registro", JOptionPane.INFORMATION_MESSAGE);
-						clean();
+						if(aux==null) {
+							Equipo equipo = new Equipo(txtNameEquipo.getText(), txtEntrenador.getText());
+							SerieNacionaldeBasket.getInstance().registrarEquipo(equipo);
+							JOptionPane.showMessageDialog(null, "Operación Satisfactoria", "Registro", JOptionPane.INFORMATION_MESSAGE);
+							clean();
+						}else {
+							aux.setNombreEquipo(txtNameEquipo.getText());
+							aux.setNombreEntrenador(txtEntrenador.getText());
+							dispose();
+							ListadoEquipos.loadSupply();
+						}
 					}
 				});
 				okButton.setActionCommand("OK");
@@ -179,7 +200,16 @@ public class RegistrarEquipo extends JDialog {
 				buttonPane.add(cancelButton);
 			}
 		}
+		loadEquipo(aux);
 	}
+	private void loadEquipo(Equipo aux) {
+		if(aux!=null) {
+			txtNameEquipo.setText(aux.getNombreEquipo());
+			txtEntrenador.setText(aux.getNombreEntrenador());
+		}
+		
+	}
+	
 	private void clean() {
 		txtNameEquipo.setText("");
 		txtEntrenador.setText("");
