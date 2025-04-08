@@ -10,22 +10,19 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-
 import javax.swing.JFrame;
 import java.awt.BorderLayout;
 import javax.swing.JPanel;
-
 import com.sun.glass.events.WindowEvent;
-
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
-
 import logico.Equipo;
 import logico.SerieNacionaldeBasket;
 import java.util.ArrayList;
 import javax.swing.JDialog;
+import logico.Partido;  
 
 public class SerieNacionalBasketball {
 
@@ -34,7 +31,6 @@ public class SerieNacionalBasketball {
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
-                // Solo mostrar el Login inicial
                 Login login = new Login();
                 login.setVisible(true);
             }
@@ -48,13 +44,11 @@ public class SerieNacionalBasketball {
     private void initialize() {
         frmSerieNacionalDe = new JFrame();
         frmSerieNacionalDe.setTitle("Serie Nacional de Basketball");
-        frmSerieNacionalDe.setBounds(100, 100, 743, 460);
+        frmSerieNacionalDe.setBounds(100, 100, 800, 600);
         frmSerieNacionalDe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frmSerieNacionalDe.getContentPane().setLayout(new BorderLayout(0, 0));
         
-        
         frmSerieNacionalDe.addWindowListener(new WindowAdapter() {
-           // @Override
             public void windowClosing(WindowEvent e) {
                 guardarDatos();
             }
@@ -66,7 +60,7 @@ public class SerieNacionalBasketball {
         JMenuBar menuBar = new JMenuBar();
         frmSerieNacionalDe.setJMenuBar(menuBar);
         
-        // Menï¿½ Equipos
+        // Menú Equipos
         JMenu mnEquipos = new JMenu("Equipos");
         menuBar.add(mnEquipos);
         
@@ -101,7 +95,7 @@ public class SerieNacionalBasketball {
         });
         mnEquipos.add(mntmModificarEquipo);
         
-        // Menï¿½ Jugadores
+        // Menú Jugadores
         JMenu mnJugadores = new JMenu("Jugadores");
         menuBar.add(mnJugadores);
         
@@ -115,21 +109,21 @@ public class SerieNacionalBasketball {
         });
         mnJugadores.add(mntmRegistrarJugador);
         
-        JMenuItem mntmNewMenuItem_1 = new JMenuItem("Lista de Jugadores");
-        mntmNewMenuItem_1.addActionListener(new ActionListener() {
+        JMenuItem mntmListarJugadores = new JMenuItem("Lista de Jugadores");
+        mntmListarJugadores.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 ListadoJugadores dialog = new ListadoJugadores();
                 dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
                 dialog.setVisible(true);
             }
         });
-        mnJugadores.add(mntmNewMenuItem_1);
+        mnJugadores.add(mntmListarJugadores);
         
-
-        JMenu mnEstadisticas = new JMenu("Estadï¿½sticas");
+        // Menú Estadísticas
+        JMenu mnEstadisticas = new JMenu("Estadísticas");
         menuBar.add(mnEstadisticas);
         
-        JMenuItem mntmRegistrarEstadisticas = new JMenuItem("Registrar Estadï¿½sticas");
+        JMenuItem mntmRegistrarEstadisticas = new JMenuItem("Registrar Estadísticas");
         mntmRegistrarEstadisticas.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 RegEstadisticasJugador dialog = new RegEstadisticasJugador();
@@ -139,45 +133,75 @@ public class SerieNacionalBasketball {
         });
         mnEstadisticas.add(mntmRegistrarEstadisticas);
         
-        JMenuItem mntmNewMenuItem = new JMenuItem("Tabla de Estadisticas");
-        mntmNewMenuItem.addActionListener(new ActionListener() {
+        JMenuItem mntmTablaEstadisticas = new JMenuItem("Tabla de Estadisticas");
+        mntmTablaEstadisticas.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 ListadoEstadisticasGeneral dialog = new ListadoEstadisticasGeneral();
                 dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
                 dialog.setVisible(true);
             }
         });
-        mnEstadisticas.add(mntmNewMenuItem);
+        mnEstadisticas.add(mntmTablaEstadisticas);
         
-
+        // Menú Lesiones
         JMenu mnLesiones = new JMenu("Lesiones");
         menuBar.add(mnLesiones);
         
-
+        // Menú Partidos (optimizado)
         JMenu mnPartidos = new JMenu("Partidos");
         menuBar.add(mnPartidos);
+        
+        JMenuItem mntmCalendario = new JMenuItem("Calendario de Partidos");
+        mntmCalendario.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                mostrarCalendario();
+            }
+        });
+        mnPartidos.add(mntmCalendario);
+        
+        JMenuItem mntmSimularPartido = new JMenuItem("Simular Partido");
+        mntmSimularPartido.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                simularPartido();
+            }
+        });
+        mnPartidos.add(mntmSimularPartido);
     }
     
+    private void mostrarCalendario() {
+        ArrayList<Equipo> equipos = SerieNacionaldeBasket.getInstance().getEquipos();
+        if (equipos.size() < 2) {
+            JOptionPane.showMessageDialog(frmSerieNacionalDe, 
+                "Debe haber al menos 2 equipos registrados",
+                "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        Calendario calendario = new Calendario();
+        calendario.setVisible(true);
+    }
+    
+    
+    private void simularPartido() {
+        
+        Calendario calendario = new Calendario();
+        calendario.setVisible(true);
+        
+        JOptionPane.showMessageDialog(frmSerieNacionalDe,
+            "Seleccione un partido del calendario para simular",
+            "Información",
+            JOptionPane.INFORMATION_MESSAGE);
+    }
+    
+    
+    
     private void guardarDatos() {
-        FileOutputStream fileOut = null;
-        ObjectOutputStream out = null;
-        try {
-            fileOut = new FileOutputStream("serie_nacional.dat");
-            out = new ObjectOutputStream(fileOut);
+        try (ObjectOutputStream out = new ObjectOutputStream(
+             new FileOutputStream("serie_nacional.dat"))) {
             out.writeObject(SerieNacionaldeBasket.getInstance());
-            System.out.println("Datos guardados exitosamente");
         } catch (IOException e) {
             JOptionPane.showMessageDialog(frmSerieNacionalDe, 
                 "Error al guardar los datos: " + e.getMessage(),
                 "Error", JOptionPane.ERROR_MESSAGE);
-            e.printStackTrace();
-        } finally {
-            try {
-                if (out != null) out.close();
-                if (fileOut != null) fileOut.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         }
     }
     

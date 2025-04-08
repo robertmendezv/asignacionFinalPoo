@@ -201,7 +201,7 @@ public class SerieNacionaldeBasket implements Serializable{
 
 
 
-	// 	3/4/25 1:59pm -robert
+	
 	public void regUser(User user) {
 		misUsers.add(user);
 
@@ -340,12 +340,12 @@ public class SerieNacionaldeBasket implements Serializable{
 		}
 	}
 
-	/* Métodos para persistencia */
+
 	public void guardarDatos() {
 		try (ObjectOutputStream oos = new ObjectOutputStream(
 				new FileOutputStream(ARCHIVO_DATOS))) {
 
-			// Limpiar lesiones expiradas antes de guardar
+			
 			limpiarLesionesExpiradas();
 
 			DatosGuardados datos = new DatosGuardados(equipos, partidos, lesiones);
@@ -365,7 +365,7 @@ public class SerieNacionaldeBasket implements Serializable{
 			this.partidos = datos.getPartidos();
 			this.lesiones = datos.getLesiones();
 
-			// Verificar integridad de datos cargados
+			
 			verificarIntegridadDatos();
 
 		} catch (IOException | ClassNotFoundException e) {
@@ -377,10 +377,10 @@ public class SerieNacionaldeBasket implements Serializable{
 	}
 
 	private void verificarIntegridadDatos() {
-		// Eliminar referencias inválidas
+		
 		lesiones.removeIf(lesion -> lesion.getJugadorLesionado() == null);
 
-		// Verificar que los jugadores en lesiones existan en equipos
+	
 		ArrayList<Lesion> lesionesValidas = new ArrayList<>();
 		for (Lesion lesion : lesiones) {
 			boolean jugadorEncontrado = false;
@@ -409,6 +409,16 @@ public class SerieNacionaldeBasket implements Serializable{
             this.equipos = new ArrayList<>(equipos);
             this.partidos = new ArrayList<>(partidos);
             this.lesiones = new ArrayList<>(lesiones);
+        }
+        
+        public ArrayList<Partido> getPartidosPendientes() {
+            ArrayList<Partido> pendientes = new ArrayList<>();
+            for (Partido partido : partidos) { 
+                if ("Pendiente".equals(partido.getEstado())) {
+                    pendientes.add(partido);
+                }
+            }
+            return pendientes;
         }
 
         public ArrayList<Equipo> getEquipos() { return new ArrayList<>(equipos); }
