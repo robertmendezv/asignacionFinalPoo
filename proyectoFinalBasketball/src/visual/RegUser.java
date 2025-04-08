@@ -55,7 +55,7 @@ public class RegUser extends JDialog {
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(null);
 		
-		JLabel lblNombreUsuario = new JLabel("Nombre Usuario:");
+		JLabel lblNombreUsuario = new JLabel("Nombre usuario:");
 		lblNombreUsuario.setBounds(20, 26, 97, 14);
 		contentPanel.add(lblNombreUsuario);
 		
@@ -82,7 +82,7 @@ public class RegUser extends JDialog {
 		lblPassword.setBounds(189, 26, 97, 14);
 		contentPanel.add(lblPassword);
 		
-		JLabel lblConfirmarPassword = new JLabel("Confirmar Password:");
+		JLabel lblConfirmarPassword = new JLabel("Confirmar password:");
 		lblConfirmarPassword.setBounds(189, 88, 167, 14);
 		contentPanel.add(lblConfirmarPassword);
 		

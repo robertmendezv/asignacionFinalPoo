@@ -284,11 +284,6 @@ public class SerieNacionaldeBasket implements Serializable{
 	}
 
 
-
-
-	//
-
-
 	public boolean registrarLesion(Lesion lesion) {
 		if (lesion != null && !existeLesionActiva(lesion.getJugadorLesionado())) {
 			boolean resultado = lesiones.add(lesion);

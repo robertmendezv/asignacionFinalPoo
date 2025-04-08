@@ -107,7 +107,7 @@ public class Login extends JFrame {
 		panel.add(txtUsuario);
 		txtUsuario.setColumns(10);
 		
-		JLabel lblNewLabel_1 = new JLabel("Contraseña:");
+		JLabel lblNewLabel_1 = new JLabel("Contrase\u00F1a:");
 		lblNewLabel_1.setBounds(15, 115, 93, 20);
 		panel.add(lblNewLabel_1);
 		
@@ -124,7 +124,7 @@ public class Login extends JFrame {
 		passwordFieldContrasena.setBounds(15, 137, 178, 26);
 		panel.add(passwordFieldContrasena);
 		
-		JButton btnRegistrate = new JButton("¿No tienes cuenta? Regístrate");
+		JButton btnRegistrate = new JButton("\u00BFNo tienes cuenta? Registrate");
 		btnRegistrate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				abrirVentanaRegistro();
