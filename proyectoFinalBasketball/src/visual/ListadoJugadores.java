@@ -68,7 +68,7 @@ public class ListadoJugadores extends JDialog {
                 panel.add(scrollPane, BorderLayout.CENTER);
                 {
                     model = new DefaultTableModel();
-                    String[] headers = {"Nombre", "Edad", "Posición", "Número", "Equipo", "Estatura", "Peso"};
+                    String[] headers = {"Nombre", "Edad", "Posicion", "Numero", "Equipo", "Estatura", "Peso"};
                     model.setColumnIdentifiers(headers);
                     table = new JTable();
                     table.addMouseListener(new MouseAdapter() {

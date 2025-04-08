@@ -13,10 +13,12 @@ import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-
 import logico.Lesion;
 import logico.Jugador;
 import logico.SerieNacionaldeBasket;
+import java.io.File;
+import javax.imageio.ImageIO;
+import java.io.IOException;
 
 public class LesionRegistro extends JDialog {
     private final JPanel contentPanel = new JPanel();
