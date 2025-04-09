@@ -37,7 +37,6 @@ public class VerEquipo extends JDialog {
         setBounds(100, 100, 800, 500);
         getContentPane().setLayout(new BorderLayout());
         
-        // Panel superior con información del equipo
         JPanel panelSuperior = new JPanel();
         panelSuperior.setBorder(new EmptyBorder(10, 10, 10, 10));
         panelSuperior.setLayout(new BorderLayout());
@@ -52,7 +51,6 @@ public class VerEquipo extends JDialog {
         
         getContentPane().add(panelSuperior, BorderLayout.NORTH);
         
-        // Configuración de la tabla
         model = new DefaultTableModel() {
             @Override
             public Class<?> getColumnClass(int columnIndex) {
@@ -66,10 +64,9 @@ public class VerEquipo extends JDialog {
             }
         };
         
-        model.setColumnIdentifiers(new String[]{"Jugador", "Lesionado", "Acción"});
+        model.setColumnIdentifiers(new String[]{"Jugador", "Lesionado", "Acci�n"});
         table = new JTable(model);
         
-        // Configurar renderizadores y editores
         table.getColumnModel().getColumn(1).setCellRenderer(new CheckBoxRenderer());
         table.getColumnModel().getColumn(1).setCellEditor(new CheckBoxEditor());
         table.getColumnModel().getColumn(2).setCellRenderer(new ButtonRenderer());
@@ -80,7 +77,6 @@ public class VerEquipo extends JDialog {
         
         loadJugadores();
         
-        // Panel de botones
         JPanel buttonPane = new JPanel();
         buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
         getContentPane().add(buttonPane, BorderLayout.SOUTH);
@@ -101,7 +97,6 @@ public class VerEquipo extends JDialog {
         }
     }
 
-    // Clases internas para el manejo de la tabla
     class CheckBoxRenderer extends JCheckBox implements TableCellRenderer {
         public CheckBoxRenderer() {
             setHorizontalAlignment(JLabel.CENTER);
@@ -147,7 +142,7 @@ public class VerEquipo extends JDialog {
                             SerieNacionaldeBasket.getInstance().eliminarLesion(lesion);
                         }
                     }
-                    loadJugadores(); // Actualizar la tabla
+                    loadJugadores();
                     fireEditingStopped();
                 }
             });

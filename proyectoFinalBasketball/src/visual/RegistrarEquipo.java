@@ -102,62 +102,62 @@ public class RegistrarEquipo extends JDialog {
 		txtEntrenador.setColumns(10);
 
 		JPanel panel = new JPanel();
-		panel.setBackground(new Color(224, 255, 255));
+		panel.setBackground(new Color(255, 51, 51));
 		panel.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
 		panel.setBounds(0, 0, 432, 10);
 		contentPanel.add(panel);
 
 		JPanel panel_1 = new JPanel();
 		panel_1.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
-		panel_1.setBackground(new Color(224, 255, 255));
+		panel_1.setBackground(new Color(255, 51, 51));
 		panel_1.setBounds(0, 23, 432, 10);
 		contentPanel.add(panel_1);
 
 		JPanel panel_2 = new JPanel();
 		panel_2.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
-		panel_2.setBackground(new Color(224, 255, 255));
+		panel_2.setBackground(new Color(255, 51, 51));
 		panel_2.setBounds(0, 46, 432, 10);
 		contentPanel.add(panel_2);
 
 		JPanel panel_3 = new JPanel();
 		panel_3.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
-		panel_3.setBackground(new Color(224, 255, 255));
+		panel_3.setBackground(new Color(255, 51, 51));
 		panel_3.setBounds(0, 69, 432, 10);
 		contentPanel.add(panel_3);
 
 		JPanel panel_4 = new JPanel();
 		panel_4.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
-		panel_4.setBackground(new Color(224, 255, 255));
+		panel_4.setBackground(new Color(255, 51, 51));
 		panel_4.setBounds(0, 92, 432, 10);
 		contentPanel.add(panel_4);
 
 		JPanel panel_5 = new JPanel();
 		panel_5.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
-		panel_5.setBackground(new Color(224, 255, 255));
+		panel_5.setBackground(new Color(255, 51, 51));
 		panel_5.setBounds(0, 115, 432, 10);
 		contentPanel.add(panel_5);
 
 		JPanel panel_6 = new JPanel();
 		panel_6.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
-		panel_6.setBackground(new Color(224, 255, 255));
+		panel_6.setBackground(new Color(255, 51, 51));
 		panel_6.setBounds(0, 138, 432, 10);
 		contentPanel.add(panel_6);
 
 		JPanel panel_7 = new JPanel();
 		panel_7.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
-		panel_7.setBackground(new Color(224, 255, 255));
+		panel_7.setBackground(new Color(255, 51, 51));
 		panel_7.setBounds(0, 161, 432, 10);
 		contentPanel.add(panel_7);
 
 		JPanel panel_8 = new JPanel();
 		panel_8.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
-		panel_8.setBackground(new Color(224, 255, 255));
+		panel_8.setBackground(new Color(255, 51, 51));
 		panel_8.setBounds(0, 184, 432, 10);
 		contentPanel.add(panel_8);
 
 		JPanel panel_9 = new JPanel();
 		panel_9.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
-		panel_9.setBackground(new Color(224, 255, 255));
+		panel_9.setBackground(new Color(255, 51, 51));
 		panel_9.setBounds(0, 207, 432, 10);
 		contentPanel.add(panel_9);
 		{
