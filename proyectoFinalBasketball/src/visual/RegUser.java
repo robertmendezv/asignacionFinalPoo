@@ -129,7 +129,7 @@ public class RegUser extends JDialog {
 				                password
 				            );
 				            
-				            SerieNacionaldeBasket.getInstance().registrarUser(user);
+				            SerieNacionaldeBasket.getInstance().regUser(user);
 				            
 				            // 5. Guardar en empresa.dat
 				            guardarUsuariosEnArchivo();

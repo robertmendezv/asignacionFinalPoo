@@ -1,6 +1,5 @@
-
-
 package visual;
+
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
@@ -16,7 +15,6 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import com.sun.glass.events.WindowEvent;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -31,6 +29,8 @@ import logico.SerieNacionaldeBasket;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.ActionEvent;
+import java.awt.event.WindowEvent;
+
 
 
 public class Login extends JFrame {
@@ -39,54 +39,30 @@ public class Login extends JFrame {
 	private JTextField txtUsuario;
 	private JPasswordField passwordFieldContrasena;
 
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				FileInputStream empresa;
-				FileOutputStream empresa2;
-				ObjectInputStream empresaRead;
-				ObjectOutputStream empresaWrite;
-				try {
-					empresa = new FileInputStream ("empresa.dat");
-					empresaRead = new ObjectInputStream(empresa);
-					SerieNacionaldeBasket temp = (SerieNacionaldeBasket)empresaRead.readObject();
-					SerieNacionaldeBasket.setSerie(temp);
-					empresa.close();
-					empresaRead.close();
-				} catch (FileNotFoundException e) {
-					try {
-						empresa2 = new  FileOutputStream("empresa.dat");
-						empresaWrite = new ObjectOutputStream(empresa2);
-						User aux = new User("Administrador", "Admin", "Admin");
-						SerieNacionaldeBasket.getInstance().regUser(aux);
-						empresaWrite.writeObject(SerieNacionaldeBasket.getInstance());
-						empresa2.close();
-						empresaWrite.close();
-					} catch (FileNotFoundException e1) {
-					} catch (IOException e1) {
-						// TODO Auto-generated catch block
-					}
-				} catch (IOException e) {
-					
-					
-				} catch (ClassNotFoundException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				
-				try {
-					Login frame = new Login();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 
-	//Create the frame.
+	//Create the frame
 	 
 	public Login() {
+	    SerieNacionaldeBasket.getInstance().cargarDatos();
+		addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent e) {
+				FileOutputStream empresa2;
+				ObjectOutputStream empresaWrite;
+				try {
+					empresa2 = new  FileOutputStream("empresa.dat");
+					empresaWrite = new ObjectOutputStream(empresa2);
+					empresaWrite.writeObject(SerieNacionaldeBasket.getInstance());
+				} catch (FileNotFoundException e1) {		
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+			}
+		});
+
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 583, 383);
 		contentPane = new JPanel();
@@ -113,9 +89,35 @@ public class Login extends JFrame {
 		
 		JButton btnNewButton = new JButton("Login");
 		btnNewButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				autenticarUser();
-			}
+		    public void actionPerformed(ActionEvent e) {
+		        String username = txtUsuario.getText().trim();
+		        String password = new String(passwordFieldContrasena.getPassword()).trim();
+		        
+		        // Validación básica de campos vacíos
+		        if (username.isEmpty() || password.isEmpty()) {
+		            JOptionPane.showMessageDialog(Login.this, 
+		                "Por favor complete todos los campos", 
+		                "Campos vacíos", 
+		                JOptionPane.WARNING_MESSAGE);
+		            return;
+		        }
+		        
+		        // Verificación de credenciales
+		        boolean loginExitoso = SerieNacionaldeBasket.getInstance().confirmLogin(username, password);
+		        
+		        if (loginExitoso) {
+		            SerieNacionalBasketball frame = new SerieNacionalBasketball();
+		            dispose();
+		            frame.setVisible(true);
+		        } else {
+		            JOptionPane.showMessageDialog(Login.this, 
+		                "Usuario o contraseña incorrectos", 
+		                "Error de autenticación", 
+		                JOptionPane.ERROR_MESSAGE);
+		            passwordFieldContrasena.setText("");
+		            txtUsuario.requestFocus();
+		        }        
+		    }
 		});
 		btnNewButton.setBounds(241, 92, 115, 29);
 		panel.add(btnNewButton);
@@ -135,6 +137,8 @@ public class Login extends JFrame {
 	}
 	
 	
+
+	
 	private void abrirVentanaRegistro() {
 	    this.setVisible(false); // ocultar login
 	    RegUser regUser = new RegUser();
@@ -144,61 +148,11 @@ public class Login extends JFrame {
 	    // volver a abrir login
 	    
 	    regUser.addWindowListener(new WindowAdapter() {
-	        //@Override
-	        public void windowClosed(WindowEvent e) {
-	            Login.this.setVisible(true);
+	        @Override 
+	        public void windowClosed(java.awt.event.WindowEvent e) { 
+	            Login.this.setVisible(true); 
 	        }
 	    });
 	}
 	
-	
-	
-	private void autenticarUser() {
-	    String username = txtUsuario.getText().trim();
-	    String password = new String(passwordFieldContrasena.getPassword());
-	    
-	    if (username.isEmpty() || password.isEmpty()) {
-	        JOptionPane.showMessageDialog(this, "Por favor ingrese usuario y contraseña", 
-	            "Campos vacíos", JOptionPane.WARNING_MESSAGE);
-	        return;
-	    }
-	    
-	    User user = SerieNacionaldeBasket.getInstance().buscarUsuarioPorNombre(username);
-	    
-	    if (user == null || !user.getPassw().equals(password)) {
-	        JOptionPane.showMessageDialog(this, "Usuario o contraseña incorrectos", 
-	            "Error de autenticación", JOptionPane.ERROR_MESSAGE);
-	        passwordFieldContrasena.setText("");
-	        txtUsuario.requestFocus();
-	    } else {
-	        // Login exitoso - Abrir ventana principal y cerrar login
-	        JOptionPane.showMessageDialog(this, "Bienvenido " + user.getUserName(), 
-	            "Login exitoso", JOptionPane.INFORMATION_MESSAGE);
-	        
-	        // Cargar datos (si es necesario)
-	        cargarDatos();
-	        
-	        // Abrir ventana principal
-	        EventQueue.invokeLater(() -> {
-	            SerieNacionalBasketball mainWindow = new SerieNacionalBasketball();
-	            mainWindow.setVisible(true);
-	        });
-	        
-	        // Cerrar ventana de login
-	        this.dispose();
-	    }
-	}
-
-	private void cargarDatos() {
-	    try (FileInputStream fileIn = new FileInputStream("serie_nacional.dat");
-	         ObjectInputStream in = new ObjectInputStream(fileIn)) {
-	        SerieNacionaldeBasket.setSerie((SerieNacionaldeBasket) in.readObject());
-	    } catch (FileNotFoundException e) {
-	        System.out.println("No se encontró archivo de datos, se creará uno nuevo al guardar");
-	    } catch (IOException | ClassNotFoundException e) {
-	        JOptionPane.showMessageDialog(this, 
-	            "Error al cargar datos: " + e.getMessage(),
-	            "Error", JOptionPane.ERROR_MESSAGE);
-	    }
-	}
 }

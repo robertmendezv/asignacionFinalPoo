@@ -36,7 +36,7 @@ public class SerieNacionaldeBasket implements Serializable{
 		this.partidos = new ArrayList<Partido>();
 		this.lesiones = new ArrayList<Lesion>();
 		this.misJugadores = new ArrayList<Jugador>();
-
+		this.misUsers = new ArrayList<User>();
 	}	
 
 
@@ -198,14 +198,6 @@ public class SerieNacionaldeBasket implements Serializable{
 
 
 
-
-
-
-	
-	public void regUser(User user) {
-		misUsers.add(user);
-
-	}
 	public void setMisUsers(ArrayList<User> misUsers) {
 		this.misUsers = misUsers;
 	}
@@ -220,17 +212,20 @@ public class SerieNacionaldeBasket implements Serializable{
 	}
 
 
-	public boolean confirmLogin(String text, String text2) {
-		boolean login = false;
-		for (User user : misUsers) {
-			if(user.getUserName().equals(text) && user.getPassw().equals(text2)){
-				loginUser = user;
-				login = true;
-			}
-		}
-		return login;
+	public boolean confirmLogin(String username, String password) {
+	    if(misUsers == null) { // ProtecciÃ³n adicional
+	        misUsers = new ArrayList<>();
+	        return false;
+	    }
+	    
+	    for (User user : misUsers) {
+	        if(user.getUserName().equals(username) && user.getPassw().equals(password)){
+	            loginUser = user;
+	            return true;
+	        }
+	    }
+	    return false;
 	}
-
 
 	public static SerieNacionaldeBasket getSerie() {
 		return serie;
@@ -251,12 +246,16 @@ public class SerieNacionaldeBasket implements Serializable{
 	}
 
 
-	public boolean registrarUser(User user) {
-		if(user != null && !existeUser( user.getUserName() ) ) {
-			return misUsers.add(user);
-		}
-		return false;
-	}
+    public void regUser(User user) {
+        if(misUsers == null) {
+            misUsers = new ArrayList<>();
+        }
+        if(user != null && !existeUser(user.getUserName())) {
+            misUsers.add(user);
+            guardarDatos(); 
+            System.out.println("Usuario registrado: " + user.getUserName());
+        }
+    }
 
 
 	private boolean existeUser(String nombreUser) {
@@ -348,8 +347,10 @@ public class SerieNacionaldeBasket implements Serializable{
 			
 			limpiarLesionesExpiradas();
 
-			DatosGuardados datos = new DatosGuardados(equipos, partidos, lesiones);
+			DatosGuardados datos = new DatosGuardados(equipos, partidos, lesiones, misUsers);
 			oos.writeObject(datos);
+	        System.out.println("Datos guardados. Usuarios: " + misUsers.size());
+
 		} catch (IOException e) {
 			System.err.println("Error al guardar datos: " + e.getMessage());
 		}
@@ -364,15 +365,18 @@ public class SerieNacionaldeBasket implements Serializable{
 			this.equipos = datos.getEquipos();
 			this.partidos = datos.getPartidos();
 			this.lesiones = datos.getLesiones();
+			this.misUsers = datos.getMisUsers();
 
 			
 			verificarIntegridadDatos();
 
 		} catch (IOException | ClassNotFoundException e) {
-			System.out.println("Iniciando con datos nuevos. Razón: " + e.getMessage());
+			System.out.println("Iniciando con datos nuevos. Razï¿½n: " + e.getMessage());
 			this.equipos = new ArrayList<>();
 			this.partidos = new ArrayList<>();
 			this.lesiones = new ArrayList<>();
+	        this.misUsers = new ArrayList<>(); 
+
 		}
 	}
 
@@ -402,13 +406,18 @@ public class SerieNacionaldeBasket implements Serializable{
         private ArrayList<Equipo> equipos;
         private ArrayList<Partido> partidos;
         private ArrayList<Lesion> lesiones;
+        private ArrayList<User> misUsers; 
 
         public DatosGuardados(ArrayList<Equipo> equipos, 
                             ArrayList<Partido> partidos, 
-                            ArrayList<Lesion> lesiones) {
+                            ArrayList<Lesion> lesiones,
+                            ArrayList<User>misUsers) {
             this.equipos = new ArrayList<>(equipos);
             this.partidos = new ArrayList<>(partidos);
             this.lesiones = new ArrayList<>(lesiones);
+            this.misUsers = new ArrayList<>(misUsers); 
+
+            
         }
         
         public ArrayList<Partido> getPartidosPendientes() {
@@ -424,6 +433,10 @@ public class SerieNacionaldeBasket implements Serializable{
         public ArrayList<Equipo> getEquipos() { return new ArrayList<>(equipos); }
         public ArrayList<Partido> getPartidos() { return new ArrayList<>(partidos); }
         public ArrayList<Lesion> getLesiones() { return new ArrayList<>(lesiones); }
+        public ArrayList<User> getMisUsers() {return new ArrayList<>(misUsers);}
+        
+        
+        
     }
 
 

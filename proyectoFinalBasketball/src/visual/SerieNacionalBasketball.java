@@ -34,14 +34,16 @@ public class SerieNacionalBasketball {
 	private Image backgroundImage;
 
 	public static void main(String[] args) {
+		SerieNacionaldeBasket.getInstance().cargarDatos();
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
-				Login login = new Login();
+				Login login = new Login();//cuando se ejecuta Principal, abre ventana login
                 login.setVisible(true);
 			}
 		});
 	}
-
+	
+    //inicializar
 	public SerieNacionalBasketball() {
 		initialize();
 		loadBackgroundImage();
@@ -61,23 +63,49 @@ public class SerieNacionalBasketball {
 		} catch (IOException e) {
 			JOptionPane.showMessageDialog(null, 
 					"Error al cargar la imagen: " + e.getMessage() + 
-					"\nAsegúrate que la imagen está en la carpeta Imagenes al lado de src",
+					"\nAsegï¿½rate que la imagen estï¿½ en la carpeta Imagenes al lado de src",
 					"Error", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 
 	private void initialize() {
+		
+    	//titulo y ventana 
+
 		frmSerieNacionalDe = new JFrame();
 		frmSerieNacionalDe.setTitle("Serie Nacional de Basketball");
 		frmSerieNacionalDe.setBounds(100, 100, 800, 600);
 		frmSerieNacionalDe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmSerieNacionalDe.getContentPane().setLayout(new BorderLayout(0, 0));
 
-		frmSerieNacionalDe.addWindowListener(new WindowAdapter() {
-			public void windowClosing(java.awt.event.WindowEvent e) {
-				guardarDatos();
-			}
-		});
+		 //confirmacion de salida y guardado
+        frmSerieNacionalDe.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent e) {
+                int opcion = JOptionPane.showConfirmDialog(
+                    frmSerieNacionalDe,
+                    "Â¿EstÃ¡ seguro que desea salir? Todos los datos no guardados se perderÃ¡n.",
+                    "Confirmar salida",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.QUESTION_MESSAGE);
+                
+                if (opcion == JOptionPane.YES_OPTION) {
+                    try {
+                        SerieNacionaldeBasket.getInstance().guardarDatos();
+                        JOptionPane.showMessageDialog(frmSerieNacionalDe,
+                            "Datos guardados exitosamente",
+                            "InformaciÃ³n",
+                            JOptionPane.INFORMATION_MESSAGE);
+                        frmSerieNacionalDe.dispose();
+                    } catch (Exception ex) {
+                        JOptionPane.showMessageDialog(frmSerieNacionalDe, 
+                            "Error al guardar los datos: " + ex.getMessage(),
+                            "Error", 
+                            JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+            }
+        });
 
 		JPanel backgroundPanel = new JPanel() {
 			@Override
@@ -102,7 +130,7 @@ public class SerieNacionalBasketball {
 		JMenuBar menuBar = new JMenuBar();
 		frmSerieNacionalDe.setJMenuBar(menuBar);
 
-		// Menú Equipos
+		// Menï¿½ Equipos
 		JMenu mnEquipos = new JMenu("Equipos");
 		menuBar.add(mnEquipos);
 
@@ -126,7 +154,7 @@ public class SerieNacionalBasketball {
 		});
 		mnEquipos.add(mntmListarEquipos);
 
-		// Menú Jugadores
+		// Menï¿½ Jugadores
 		JMenu mnJugadores = new JMenu("Jugadores");
 		menuBar.add(mnJugadores);
 
@@ -150,11 +178,11 @@ public class SerieNacionalBasketball {
 		});
 		mnJugadores.add(mntmListarJugadores);
 
-		// Menú Estadísticas
-		JMenu mnEstadisticas = new JMenu("Estadísticas");
+		// Menï¿½ Estadï¿½sticas
+		JMenu mnEstadisticas = new JMenu("Estadï¿½sticas");
 		menuBar.add(mnEstadisticas);
 
-		JMenuItem mntmRegistrarEstadisticas = new JMenuItem("Registrar Estadísticas");
+		JMenuItem mntmRegistrarEstadisticas = new JMenuItem("Registrar Estadï¿½sticas");
 		mntmRegistrarEstadisticas.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				RegEstadisticasJugador dialog = new RegEstadisticasJugador();
@@ -174,11 +202,11 @@ public class SerieNacionalBasketball {
 		});
 		mnEstadisticas.add(mntmTablaEstadisticas);
 
-		// Menú Lesiones
+		// Menï¿½ Lesiones
 		JMenu mnLesiones = new JMenu("Lesiones");
 		menuBar.add(mnLesiones);
 
-		// Menú Partidos
+		// Menï¿½ Partidos
 		JMenu mnPartidos = new JMenu("Partidos");
 		menuBar.add(mnPartidos);
 
@@ -217,10 +245,12 @@ public class SerieNacionalBasketball {
 
 		JOptionPane.showMessageDialog(frmSerieNacionalDe,
 				"Seleccione un partido del calendario para simular",
-				"Información",
+				"Informaciï¿½n",
 				JOptionPane.INFORMATION_MESSAGE);
 	}
 
+	
+	/* no se usa, hay una funcion igual en la controladora
 	private void guardarDatos() {
 		try (ObjectOutputStream out = new ObjectOutputStream(
 				new FileOutputStream("serie_nacional.dat"))) {
@@ -231,7 +261,10 @@ public class SerieNacionalBasketball {
 					"Error", JOptionPane.ERROR_MESSAGE);
 		}
 	}
-
+	*/
+	
+	
+	
 	public void setVisible(boolean visible) {
 		frmSerieNacionalDe.setVisible(visible);
 	}
