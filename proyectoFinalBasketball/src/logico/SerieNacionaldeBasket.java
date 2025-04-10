@@ -20,14 +20,15 @@ public class SerieNacionaldeBasket implements Serializable{
 	private ArrayList<Partido> partidos;
 	private ArrayList<Lesion> lesiones;
 
-	//robert
+
 	private static final long serialVersionUID = 1L;
     private static final String ARCHIVO_DATOS = "SerieNacionalBasketball.dat";
 	private static SerieNacionaldeBasket serie;
 	private ArrayList<User> misUsers;
 	private ArrayList<Jugador> misJugadores;
 	private static User loginUser;
-	//
+	
+
 
 
 
@@ -168,20 +169,13 @@ public class SerieNacionaldeBasket implements Serializable{
 		return false;
 	}
 
-	public void agregarPartido(Partido partido) {
-		if (partido != null) {
-
-			if (equipos.contains(partido.getEquipoLocal()) && 
-					equipos.contains(partido.getEquipoVisitante())) {
-				if (!partidos.contains(partido)) {
-					partidos.add(partido);
-				} else {
-					throw new IllegalArgumentException("El partido ya est� registrado");
-				}
-			} else {
-				throw new IllegalArgumentException("Uno o ambos equipos no est�n registrados");
-			}
-		}
+	
+	public boolean agregarPartido(Partido partido) {
+	    if (!partidos.contains(partido)) {
+	        partidos.add(partido);
+	        return true;
+	    }
+	    return false; 
 	}
 
 

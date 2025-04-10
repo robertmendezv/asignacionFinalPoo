@@ -1,5 +1,4 @@
 package visual;
-
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
@@ -8,11 +7,8 @@ import java.time.LocalTime;
 import logico.*;
 import java.util.ArrayList;
 import java.io.Serializable;
-import java.io.File;
-import java.io.IOException;
-import javax.imageio.ImageIO;
 
-public class Simulacion extends JFrame implements Serializable {
+public class Simulacion extends JFrame implements Serializable{
     private JPanel contentPane;
     private JLabel lblScoreLocal, lblScoreVisitante, lblTiempo, lblPeriodo;
     private JButton btnLocal1, btnLocal2, btnLocal3, btnVisitante1, btnVisitante2, btnVisitante3;
@@ -43,50 +39,24 @@ public class Simulacion extends JFrame implements Serializable {
         setContentPane(contentPane);
         contentPane.setLayout(new BorderLayout(10, 10));
         
-        try {
-            String projectPath = System.getProperty("user.dir");
-            String imagePath = projectPath + File.separator + "Imagenes" + File.separator + "simulacion.jpg";
-            File imageFile = new File(imagePath);
-            
-            if (!imageFile.exists()) {
-                JOptionPane.showMessageDialog(this, 
-                    "No se encontró la imagen en:\n" + imagePath, 
-                    "Error", JOptionPane.ERROR_MESSAGE);
-            } else {
-                Image img = ImageIO.read(imageFile);
-                ImageIcon icon = new ImageIcon(img.getScaledInstance(150, 150, Image.SCALE_SMOOTH));
-                JLabel lblImagen = new JLabel(icon);
-                lblImagen.setBorder(new EmptyBorder(0, 10, 0, 0)); 
-                
-                JPanel panelImagen = new JPanel(new BorderLayout());
-                panelImagen.add(lblImagen, BorderLayout.NORTH);
-                contentPane.add(panelImagen, BorderLayout.WEST);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            JOptionPane.showMessageDialog(this, 
-                "Error al cargar la imagen: " + e.getMessage(), 
-                "Error", JOptionPane.ERROR_MESSAGE);
-        }
-        
-        // Iniciar el partido en el sistema
+       
         partidoActual.iniciarPartido();
         
         initComponents();
     }
 
     private void initComponents() {
-        // Panel superior para los marcadores
+       
         JPanel panelMarcadores = new JPanel(new GridLayout(1, 3, 10, 10));
         panelMarcadores.setBorder(new LineBorder(Color.BLACK, 2));
         
-        // Equipo local
+       
         JPanel panelLocal = crearPanelEquipo(equipoLocal.getNombreEquipo(), Color.RED);
         lblScoreLocal = new JLabel("0", SwingConstants.CENTER);
         lblScoreLocal.setFont(new Font("Arial", Font.BOLD, 48));
         panelLocal.add(lblScoreLocal, BorderLayout.CENTER);
         
-        // Tiempo y periodo
+        
         JPanel panelCentral = new JPanel(new BorderLayout());
         lblTiempo = new JLabel("12:00", SwingConstants.CENTER);
         lblTiempo.setFont(new Font("Arial", Font.BOLD, 48));
@@ -96,7 +66,7 @@ public class Simulacion extends JFrame implements Serializable {
         lblPeriodo.setFont(new Font("Arial", Font.BOLD, 16));
         panelCentral.add(lblPeriodo, BorderLayout.SOUTH);
         
-        // Equipo visitante
+        
         JPanel panelVisitante = crearPanelEquipo(equipoVisitante.getNombreEquipo(), Color.BLUE);
         lblScoreVisitante = new JLabel("0", SwingConstants.CENTER);
         lblScoreVisitante.setFont(new Font("Arial", Font.BOLD, 48));
@@ -108,15 +78,15 @@ public class Simulacion extends JFrame implements Serializable {
         
         contentPane.add(panelMarcadores, BorderLayout.NORTH);
         
-        // Panel de botones para anotación
+      
         JPanel panelBotonesAnotacion = new JPanel(new GridLayout(2, 3, 5, 5));
         
-        // Botones equipo local
+       
         btnLocal1 = new JButton("Canasta (1)");
         btnLocal2 = new JButton("Canasta (2)");
         btnLocal3 = new JButton("Triple (3)");
         
-        // Botones equipo visitante
+       
         btnVisitante1 = new JButton("Canasta (1)");
         btnVisitante2 = new JButton("Canasta (2)");
         btnVisitante3 = new JButton("Triple (3)");
@@ -147,17 +117,17 @@ public class Simulacion extends JFrame implements Serializable {
         panelControl.add(btnTimeoutVisitante);
         panelControl.add(btnFinPeriodo);
         
-        // Agregar paneles al contentPane
+   
         JPanel panelSur = new JPanel(new BorderLayout(5, 5));
         panelSur.add(panelBotonesAnotacion, BorderLayout.NORTH);
         panelSur.add(panelControl, BorderLayout.SOUTH);
         
         contentPane.add(panelSur, BorderLayout.SOUTH);
         
-        // Configurar acciones de los botones
+       
         configurarAcciones();
         
-        // Configurar timer
+      
         timer = new Timer(1000, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

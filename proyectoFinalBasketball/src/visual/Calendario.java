@@ -26,6 +26,8 @@ public class Calendario extends JFrame {
     private JSpinner spinnerHora;
     private JButton btnAgregar, btnEliminar;
     private JDateChooser dateChooser; 
+    private static final long serialVersionUID = 1L;
+
     
 
     public Calendario() {
@@ -149,45 +151,79 @@ public class Calendario extends JFrame {
 
     private void agregarPartido() {
         try {
-
+           
             if (dateChooser.getDate() == null) {
-                JOptionPane.showMessageDialog(this, "Seleccione una fecha válida", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, 
+                    "Seleccione una fecha válida", 
+                    "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
-            
+
+    
             if (cbEquipoLocal.getSelectedIndex() <= 0 || cbEquipoVisitante.getSelectedIndex() <= 0) {
-                JOptionPane.showMessageDialog(this, "Seleccione ambos equipos", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, 
+                    "Seleccione ambos equipos", 
+                    "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
-            
+
+    
             if (cbEquipoLocal.getSelectedItem().equals(cbEquipoVisitante.getSelectedItem())) {
-                JOptionPane.showMessageDialog(this, "Un equipo no puede jugar contra sí mismo", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, 
+                    "Un equipo no puede jugar contra sí mismo", 
+                    "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
-            
-            
-            LocalDate fecha = ((java.sql.Date) dateChooser.getDate()).toLocalDate();
+
+         
+            LocalDate fecha = dateChooser.getDate().toInstant()
+                              .atZone(ZoneId.systemDefault())
+                              .toLocalDate();
+
+         
             LocalTime hora = ((Date) spinnerHora.getValue()).toInstant()
-                    .atZone(ZoneId.systemDefault())
-                    .toLocalTime();
-            
+                             .atZone(ZoneId.systemDefault())
+                             .toLocalTime();
+
+       
             String nombreLocal = (String) cbEquipoLocal.getSelectedItem();
             String nombreVisitante = (String) cbEquipoVisitante.getSelectedItem();
             
             Equipo local = SerieNacionaldeBasket.getInstance().buscarEquipoPorNombre(nombreLocal);
             Equipo visitante = SerieNacionaldeBasket.getInstance().buscarEquipoPorNombre(nombreVisitante);
+
             
-    
+            if (local == null || visitante == null) {
+                JOptionPane.showMessageDialog(this, 
+                    "No se encontró uno de los equipos", 
+                    "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+           
             Partido nuevoPartido = new Partido(local, visitante, fecha, hora);
-            SerieNacionaldeBasket.getInstance().agregarPartido(nuevoPartido);
-            
-         
-            cargarPartidos();
-            
-            JOptionPane.showMessageDialog(this, "Partido agregado correctamente", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-            
+            boolean agregado = SerieNacionaldeBasket.getInstance().agregarPartido(nuevoPartido);
+
+            if (agregado) {
+                
+                cargarPartidos();
+                JOptionPane.showMessageDialog(this, 
+                    "Partido agregado correctamente", 
+                    "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                
+                dateChooser.setDate(null);
+                cbEquipoLocal.setSelectedIndex(0);
+                cbEquipoVisitante.setSelectedIndex(0);
+            } else {
+                JOptionPane.showMessageDialog(this, 
+                    "Ya existe un partido programado para esa fecha y hora", 
+                    "Error", JOptionPane.WARNING_MESSAGE);
+            }
+
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(this, "Error al agregar partido: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, 
+                "Error al agregar partido: " + ex.getMessage(), 
+                "Error", JOptionPane.ERROR_MESSAGE);
             ex.printStackTrace();
         }
     }
