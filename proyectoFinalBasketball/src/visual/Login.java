@@ -9,27 +9,27 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-
-
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JPasswordField;
 import javax.swing.JButton;
-
-
-
 import logico.User;
 import logico.SerieNacionaldeBasket;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowEvent;
+import java.awt.Image;
+import java.io.File;
+import java.io.IOException;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
 
 
@@ -38,6 +38,8 @@ public class Login extends JFrame {
 	private JPanel contentPane;
 	private JTextField txtUsuario;
 	private JPasswordField passwordFieldContrasena;
+	private JPanel panel;
+
 
 
 	//Create the frame
@@ -62,6 +64,29 @@ public class Login extends JFrame {
 				
 			}
 		});
+		
+		try {
+	        String projectPath = System.getProperty("user.dir");
+	        String imagePath = projectPath + File.separator + "Imagenes" + File.separator + "login.png";
+	        File imageFile = new File(imagePath);
+
+	        if (!imageFile.exists()) {
+	            JOptionPane.showMessageDialog(this, 
+	                "No se encontr� la imagen en:\n" + imagePath, 
+	                "Error", JOptionPane.ERROR_MESSAGE);
+	        } else {
+	            Image img = ImageIO.read(imageFile);
+	            ImageIcon icon = new ImageIcon(img.getScaledInstance(100, 100, Image.SCALE_SMOOTH));
+	            JLabel lblImagen = new JLabel(icon);
+	            lblImagen.setBounds(450, 20, 100, 100);
+	            panel.add(lblImagen);
+	        }
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	        JOptionPane.showMessageDialog(this, 
+	            "Error al cargar la imagen: " + e.getMessage(), 
+	            "Error", JOptionPane.ERROR_MESSAGE);
+	    }
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 583, 383);
@@ -93,7 +118,7 @@ public class Login extends JFrame {
 		        String username = txtUsuario.getText().trim();
 		        String password = new String(passwordFieldContrasena.getPassword()).trim();
 		        
-		        // Validación básica de campos vacíos
+		        
 		        if (username.isEmpty() || password.isEmpty()) {
 		            JOptionPane.showMessageDialog(Login.this, 
 		                "Por favor complete todos los campos", 
@@ -102,7 +127,7 @@ public class Login extends JFrame {
 		            return;
 		        }
 		        
-		        // Verificación de credenciales
+		        
 		        boolean loginExitoso = SerieNacionaldeBasket.getInstance().confirmLogin(username, password);
 		        
 		        if (loginExitoso) {
