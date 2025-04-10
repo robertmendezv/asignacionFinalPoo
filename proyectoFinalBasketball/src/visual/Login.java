@@ -48,20 +48,7 @@ public class Login extends JFrame {
 	    SerieNacionaldeBasket.getInstance().cargarDatos();
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
-				FileOutputStream empresa2;
-				ObjectOutputStream empresaWrite;
-				try {
-					empresa2 = new  FileOutputStream("empresa.dat");
-					empresaWrite = new ObjectOutputStream(empresa2);
-					empresaWrite.writeObject(SerieNacionaldeBasket.getInstance());
-				} catch (FileNotFoundException e1) {		
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				
+                SerieNacionaldeBasket.getInstance().guardarDatos();
 			}
 		});
 		
@@ -76,6 +63,32 @@ public class Login extends JFrame {
 		JPanel panel = new JPanel();
 		contentPane.add(panel, BorderLayout.CENTER);
 		panel.setLayout(null);
+		
+		
+		try {
+	        String projectPath = System.getProperty("user.dir");
+	        String imagePath = projectPath + File.separator + "Imagenes" + File.separator + "login.png";
+	        File imageFile = new File(imagePath);
+
+	        if (!imageFile.exists()) {
+	            JOptionPane.showMessageDialog(this, 
+	                "No se encontr� la imagen en:\n" + imagePath, 
+	                "Error", JOptionPane.ERROR_MESSAGE);
+	        } else {
+	            Image img = ImageIO.read(imageFile);
+	            ImageIcon icon = new ImageIcon(img.getScaledInstance(100, 100, Image.SCALE_SMOOTH));
+	            JLabel lblImagen = new JLabel(icon);
+	            lblImagen.setBounds(450, 20, 100, 100);
+	            panel.add(lblImagen);
+	        }
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	        JOptionPane.showMessageDialog(this, 
+	            "Error al cargar la imagen: " + e.getMessage(), 
+	            "Error", JOptionPane.ERROR_MESSAGE);
+	    }
+		
+		
 		
 		JLabel lblNewLabel = new JLabel("Usuario:");
 		lblNewLabel.setBounds(15, 40, 69, 20);

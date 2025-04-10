@@ -4,6 +4,8 @@ import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -25,13 +27,20 @@ import javax.swing.JDialog;
 import logico.Partido;
 import java.awt.Image;
 import java.awt.Graphics;
+import java.net.Socket;
 import java.net.URL;
+import java.net.UnknownHostException;
+
 import javax.imageio.ImageIO;
 
 public class SerieNacionalBasketball {
 
 	private JFrame frmSerieNacionalDe;
 	private Image backgroundImage;
+	
+	static Socket sfd = null;
+	static DataInputStream EntradaSocket;
+	static DataOutputStream SalidaSocket;
 
 	public static void main(String[] args) {
 		SerieNacionaldeBasket.getInstance().cargarDatos();
@@ -225,6 +234,51 @@ public class SerieNacionalBasketball {
 			}
 		});
 		mnPartidos.add(mntmSimularPartido);
+		
+		
+		
+		//
+		JMenu mnRespaldo = new JMenu("Respaldo");
+		menuBar.add(mnRespaldo);
+		
+	
+		
+		//socket
+		JMenuItem mntmRespaldo = new JMenuItem("Respaldo");
+		mntmRespaldo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try
+			    {
+			      sfd = new Socket("127.0.0.1",7000);
+			      DataInputStream aux = new DataInputStream(new FileInputStream(new File("SerieNacionalBasketball.dat")));
+			      SalidaSocket = new DataOutputStream((sfd.getOutputStream()));
+			      int unByte;
+			      try
+			      {
+			    	while ((unByte = aux.read()) != -1){
+			    		SalidaSocket.write(unByte);
+						SalidaSocket.flush();
+			    	}
+			      }
+			      catch (IOException ioe)
+			      {
+			        System.out.println("Error: "+ioe);
+			      }
+			    }
+			    catch (UnknownHostException uhe)
+			    {
+			      System.out.println("No se puede acceder al servidor.");
+			      System.exit(1);
+			    }
+			    catch (IOException ioe)
+			    {
+			      System.out.println("Comunicacion rechazada.");
+			      System.exit(1);
+			    }
+			}
+		});
+
+		mnRespaldo.add(mntmRespaldo);
 	}
 
 	private void mostrarCalendario() {
