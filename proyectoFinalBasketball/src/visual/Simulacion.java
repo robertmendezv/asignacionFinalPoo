@@ -8,8 +8,11 @@ import java.time.LocalTime;
 import logico.*;
 import java.util.ArrayList;
 import java.io.Serializable;
+import java.io.File;
+import java.io.IOException;
+import javax.imageio.ImageIO;
 
-public class Simulacion extends JFrame implements Serializable{
+public class Simulacion extends JFrame implements Serializable {
     private JPanel contentPane;
     private JLabel lblScoreLocal, lblScoreVisitante, lblTiempo, lblPeriodo;
     private JButton btnLocal1, btnLocal2, btnLocal3, btnVisitante1, btnVisitante2, btnVisitante3;
@@ -39,6 +42,32 @@ public class Simulacion extends JFrame implements Serializable{
         contentPane.setBorder(new EmptyBorder(10, 10, 10, 10));
         setContentPane(contentPane);
         contentPane.setLayout(new BorderLayout(10, 10));
+        
+        try {
+            String projectPath = System.getProperty("user.dir");
+            String imagePath = projectPath + File.separator + "Imagenes" + File.separator + "simulacion.jpg";
+            File imageFile = new File(imagePath);
+            
+            if (!imageFile.exists()) {
+                JOptionPane.showMessageDialog(this, 
+                    "No se encontró la imagen en:\n" + imagePath, 
+                    "Error", JOptionPane.ERROR_MESSAGE);
+            } else {
+                Image img = ImageIO.read(imageFile);
+                ImageIcon icon = new ImageIcon(img.getScaledInstance(150, 150, Image.SCALE_SMOOTH));
+                JLabel lblImagen = new JLabel(icon);
+                lblImagen.setBorder(new EmptyBorder(0, 10, 0, 0)); 
+                
+                JPanel panelImagen = new JPanel(new BorderLayout());
+                panelImagen.add(lblImagen, BorderLayout.NORTH);
+                contentPane.add(panelImagen, BorderLayout.WEST);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, 
+                "Error al cargar la imagen: " + e.getMessage(), 
+                "Error", JOptionPane.ERROR_MESSAGE);
+        }
         
         // Iniciar el partido en el sistema
         partidoActual.iniciarPartido();

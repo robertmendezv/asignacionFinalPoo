@@ -2,7 +2,6 @@ package visual;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -16,6 +15,9 @@ import java.util.Date;
 import com.toedter.calendar.IDateEditor;
 import logico.Equipo;
 import java.time.ZoneId;
+import java.io.File;
+import java.io.IOException;
+import javax.imageio.ImageIO;
 
 public class Calendario extends JFrame {
     private JTable tablaPartidos;
@@ -31,6 +33,29 @@ public class Calendario extends JFrame {
         setSize(800, 500);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
+        
+        try {
+            String projectPath = System.getProperty("user.dir");
+            String imagePath = projectPath + File.separator + "Imagenes" + File.separator + "calendar.png";
+            File imageFile = new File(imagePath);
+            
+            if (!imageFile.exists()) {
+                JOptionPane.showMessageDialog(this, 
+                    "No se encontró la imagen en:\n" + imagePath, 
+                    "Error", JOptionPane.ERROR_MESSAGE);
+            } else {
+                Image img = ImageIO.read(imageFile);
+                ImageIcon icon = new ImageIcon(img.getScaledInstance(100, 100, Image.SCALE_SMOOTH));
+                JLabel lblImagen = new JLabel(icon);
+                lblImagen.setBounds(10, 10, 100, 100);
+                getContentPane().add(lblImagen, BorderLayout.WEST);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, 
+                "Error al cargar la imagen: " + e.getMessage(), 
+                "Error", JOptionPane.ERROR_MESSAGE);
+        }
         
         initComponents();
         cargarEquipos();
