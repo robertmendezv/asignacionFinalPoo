@@ -8,6 +8,7 @@ import logico.*;
 import java.util.ArrayList;
 import java.io.Serializable;
 
+
 public class Simulacion extends JFrame implements Serializable {
     private JPanel contentPane;
     private JLabel lblScoreLocal, lblScoreVisitante;
@@ -198,9 +199,13 @@ public class Simulacion extends JFrame implements Serializable {
     
     private void registrarEstadisticasEquipo(boolean esLocal, Jugador[] jugadores) {
         Equipo equipo = esLocal ? equipoLocal : equipoVisitante;
+        if (equipo == null) {
+            JOptionPane.showMessageDialog(this, "Equipo no válido", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
         int puntos = (int) spinnerPuntos.getValue();
         
-    
         if (esLocal) {
             scoreLocal += puntos;
             lblScoreLocal.setText(String.valueOf(scoreLocal));
