@@ -65,28 +65,6 @@ public class Login extends JFrame {
 			}
 		});
 		
-		try {
-	        String projectPath = System.getProperty("user.dir");
-	        String imagePath = projectPath + File.separator + "Imagenes" + File.separator + "login.png";
-	        File imageFile = new File(imagePath);
-
-	        if (!imageFile.exists()) {
-	            JOptionPane.showMessageDialog(this, 
-	                "No se encontró la imagen en:\n" + imagePath, 
-	                "Error", JOptionPane.ERROR_MESSAGE);
-	        } else {
-	            Image img = ImageIO.read(imageFile);
-	            ImageIcon icon = new ImageIcon(img.getScaledInstance(100, 100, Image.SCALE_SMOOTH));
-	            JLabel lblImagen = new JLabel(icon);
-	            lblImagen.setBounds(450, 20, 100, 100);
-	            panel.add(lblImagen);
-	        }
-	    } catch (IOException e) {
-	        e.printStackTrace();
-	        JOptionPane.showMessageDialog(this, 
-	            "Error al cargar la imagen: " + e.getMessage(), 
-	            "Error", JOptionPane.ERROR_MESSAGE);
-	    }
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 583, 383);
