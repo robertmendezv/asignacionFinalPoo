@@ -96,7 +96,7 @@ public class ListadoEquipos extends JDialog {
 				btnEliminar = new JButton("Eliminar");
 				btnEliminar.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						int option = JOptionPane.showConfirmDialog(null, "¿Está seguro que desea eliminar el equipo con nombre: " +miEquipo.getNombreEquipo()+ "?", "Eliminar", JOptionPane.WARNING_MESSAGE);
+						int option = JOptionPane.showConfirmDialog(null, "Esta seguro que desea eliminar el equipo con nombre: " +miEquipo.getNombreEquipo()+ "?", "Eliminar", JOptionPane.WARNING_MESSAGE);
 						if(JOptionPane.YES_OPTION == option) {
 							SerieNacionaldeBasket.getInstance().eliminarEquipo(miEquipo.getNombreEquipo());
 							loadSupply();

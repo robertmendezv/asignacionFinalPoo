@@ -92,14 +92,14 @@ public class ListadoJugadores extends JDialog {
             buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
             getContentPane().add(buttonPane, BorderLayout.SOUTH);
             {
-                JButton btnVerEstadisticas = new JButton("Ver Estadísticas");
+                JButton btnVerEstadisticas = new JButton("Ver Estadisticas");
                 btnVerEstadisticas.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
                         if (miJugador != null) {
                             // Aquí puedes abrir una ventana de estadísticas del jugador
                             JOptionPane.showMessageDialog(ListadoJugadores.this, 
-                                "Estadísticas de " + miJugador.getNombreJugador(), 
-                                "Estadísticas", JOptionPane.INFORMATION_MESSAGE);
+                                "Estadisticas de " + miJugador.getNombreJugador(), 
+                                "Estadisticas", JOptionPane.INFORMATION_MESSAGE);
                         } else {
                             JOptionPane.showMessageDialog(ListadoJugadores.this, 
                                 "Seleccione un jugador primero", 

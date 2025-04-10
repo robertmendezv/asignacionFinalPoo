@@ -34,7 +34,7 @@ public class LesionRegistro extends JDialog {
 
     public LesionRegistro(Jugador jugador) {
         this.jugador = jugador;
-        setTitle("Registrar Lesión");
+        setTitle("Registrar Lesiï¿½n");
         setBounds(100, 100, 430, 400);
         setLocationRelativeTo(null);
         
@@ -81,18 +81,18 @@ public class LesionRegistro extends JDialog {
     }
 
     private void setupFormComponents() {
-        JLabel lblTipoLesion = new JLabel("Tipo de Lesión:");
+        JLabel lblTipoLesion = new JLabel("Tipo de Lesion:");
         lblTipoLesion.setBounds(30, 30, 120, 25);
         contentPanel.add(lblTipoLesion);
 
         cbxTipoLesion = new JComboBox<>();
         cbxTipoLesion.setModel(new DefaultComboBoxModel<>(new String[]{
-            "Esguince", "Fractura", "Desgarro", "Tendinitis", "Luxación"
+            "Esguince", "Fractura", "Desgarro", "Tendinitis", "Luxacion"
         }));
         cbxTipoLesion.setBounds(160, 30, 220, 25);
         contentPanel.add(cbxTipoLesion);
 
-        JLabel lblDuracion = new JLabel("Duración (días):");
+        JLabel lblDuracion = new JLabel("Duracion (dias):");
         lblDuracion.setBounds(30, 80, 120, 25);
         contentPanel.add(lblDuracion);
 
@@ -149,7 +149,7 @@ public class LesionRegistro extends JDialog {
                 
                 if (duracion <= 0) {
                     JOptionPane.showMessageDialog(this, 
-                        "La duración debe ser mayor a 0 días", 
+                        "La duracion debe ser mayor a 0 dias", 
                         "Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
@@ -158,11 +158,11 @@ public class LesionRegistro extends JDialog {
                 boolean registrado = SerieNacionaldeBasket.getInstance().registrarLesion(lesion);
                 
                 if (registrado) {
-                    JOptionPane.showMessageDialog(this, "Lesión registrada exitosamente");
+                    JOptionPane.showMessageDialog(this, "Lesion registrada exitosamente");
                     dispose();
                 } else {
                     JOptionPane.showMessageDialog(this, 
-                        "El jugador ya tiene una lesión activa", 
+                        "El jugador ya tiene una lesion activa", 
                         "Error", JOptionPane.ERROR_MESSAGE);
                 }
             } else {
@@ -170,7 +170,7 @@ public class LesionRegistro extends JDialog {
             }
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(this, 
-                "La duración debe ser un número válido", 
+                "La duracion debe ser un numero valido", 
                 "Error", JOptionPane.ERROR_MESSAGE);
         }
     }

@@ -16,7 +16,7 @@ public class Server extends Thread
     }
     catch (IOException ioe)
     {
-      System.out.println("Comunicación rechazada."+ioe);
+      System.out.println("Comunicacion rechazada."+ioe);
       System.exit(1);
     }
 

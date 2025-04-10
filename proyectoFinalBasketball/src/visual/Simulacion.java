@@ -134,7 +134,7 @@ public class Simulacion extends JFrame implements Serializable {
         Jugador[] jugadoresSeleccionados = new Jugador[4]; 
         
         btnSelPuntos.addActionListener(e -> {
-            jugadoresSeleccionados[0] = seleccionarJugador("Seleccione el jugador que anotó:");
+            jugadoresSeleccionados[0] = seleccionarJugador("Seleccione el jugador que anoto:");
         });
         
         
@@ -149,7 +149,7 @@ public class Simulacion extends JFrame implements Serializable {
         
   
         btnSelDefensas.addActionListener(e -> {
-            jugadoresSeleccionados[3] = seleccionarJugador("Seleccione el jugador que hizo la acción defensiva:");
+            jugadoresSeleccionados[3] = seleccionarJugador("Seleccione el jugador que hizo la accion defensiva:");
         });
         
       
@@ -184,7 +184,7 @@ public class Simulacion extends JFrame implements Serializable {
             return (Jugador) JOptionPane.showInputDialog(
                 this,
                 mensaje,
-                "Selección de Jugador",
+                "Seleccion de Jugador",
                 JOptionPane.PLAIN_MESSAGE,
                 null,
                 jugadores.toArray(),
@@ -200,7 +200,7 @@ public class Simulacion extends JFrame implements Serializable {
     private void registrarEstadisticasEquipo(boolean esLocal, Jugador[] jugadores) {
         Equipo equipo = esLocal ? equipoLocal : equipoVisitante;
         if (equipo == null) {
-            JOptionPane.showMessageDialog(this, "Equipo no válido", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Equipo no valido", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
         
@@ -251,7 +251,7 @@ public class Simulacion extends JFrame implements Serializable {
         partidoActual.finalizarPartido(scoreLocal, scoreVisitante);
         partidoActual.setEstado("Finalizado"); 
         JOptionPane.showMessageDialog(this, 
-            "¡Partido finalizado! Resultado: " + scoreLocal + "-" + scoreVisitante);
+            "Partido finalizado! Resultado: " + scoreLocal + "-" + scoreVisitante);
         this.dispose();
     }
 }

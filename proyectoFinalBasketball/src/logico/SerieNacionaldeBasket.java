@@ -192,9 +192,7 @@ public class SerieNacionaldeBasket implements Serializable{
 
 
 
-	public void setMisUsers(ArrayList<User> misUsers) {
-		this.misUsers = misUsers;
-	}
+
 
 
 	public static User getLoginUser() {
@@ -207,7 +205,7 @@ public class SerieNacionaldeBasket implements Serializable{
 
 
 	public boolean confirmLogin(String username, String password) {
-	    if(misUsers == null) { // Protección adicional
+	    if(misUsers == null) { 
 	        misUsers = new ArrayList<>();
 	        return false;
 	    }
@@ -365,7 +363,7 @@ public class SerieNacionaldeBasket implements Serializable{
 			verificarIntegridadDatos();
 
 		} catch (IOException | ClassNotFoundException e) {
-			System.out.println("Iniciando con datos nuevos. Raz�n: " + e.getMessage());
+			System.out.println("Iniciando con datos nuevos. Razï¿½n: " + e.getMessage());
 			this.equipos = new ArrayList<>();
 			this.partidos = new ArrayList<>();
 			this.lesiones = new ArrayList<>();
@@ -414,6 +412,19 @@ public class SerieNacionaldeBasket implements Serializable{
             
         }
         
+
+        public ArrayList<Jugador> getTodosJugadores() {
+            ArrayList<Jugador> todosJugadores = new ArrayList<>();
+            for(Equipo equipo : equipos) {
+                for(Object obj : equipo.getMisjugadores()) {
+                    if(obj instanceof Jugador) {
+                        todosJugadores.add((Jugador) obj);
+                    }
+                }
+            }
+            return todosJugadores;
+        }
+        
         public ArrayList<Partido> getPartidosPendientes() {
             ArrayList<Partido> pendientes = new ArrayList<>();
             for (Partido partido : partidos) { 
@@ -432,10 +443,6 @@ public class SerieNacionaldeBasket implements Serializable{
         
         
     }
-
-
-
-
 
 
 

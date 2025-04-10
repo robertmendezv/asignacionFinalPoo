@@ -111,7 +111,7 @@ public class RegUser extends JDialog {
 				        String confirmPassword = new String(passwordFieldConfirmacion.getPassword());
 				        
 				        if (!password.equals(confirmPassword)) {
-				            JOptionPane.showMessageDialog(null, "Las contraseñas no coinciden.", "Error", JOptionPane.ERROR_MESSAGE);
+				            JOptionPane.showMessageDialog(null, "Las contrasenas no coinciden.", "Error", JOptionPane.ERROR_MESSAGE);
 				            return;
 				        }
 
@@ -134,7 +134,7 @@ public class RegUser extends JDialog {
 				            // 5. Guardar en empresa.dat
 				            guardarUsuariosEnArchivo();
 				            
-				            JOptionPane.showMessageDialog(null, "Usuario registrado exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+				            JOptionPane.showMessageDialog(null, "Usuario registrado exitosamente.", "Exito", JOptionPane.INFORMATION_MESSAGE);
 				            dispose(); // Cerrar ventana después de registrar
 				        } catch (Exception ex) {
 				            JOptionPane.showMessageDialog(null, "Error al registrar usuario: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
@@ -167,17 +167,4 @@ public class RegUser extends JDialog {
 	    }
 	}
 	
-/*
-    private void limpiarCampos() {
-        txtNombre.setText("");
-        spEdad.setValue(18);
-        txtPosicion.setText("");
-        spNumJugador.setValue(1);
-        spEstatura.setValue(170);
-        txtSangre.setText("");
-        spPeso.setValue(70.0);
-        txtFechaNac.setText("");
-        txtMarca.setText("");
-    }
-    */
 }

@@ -67,11 +67,11 @@ public class Registrarjugador extends JFrame {
         contentPane.add(new JLabel("Datos:"));
         contentPane.add(panelSpinners);
 
-        contentPane.add(new JLabel("Posición:"));
+        contentPane.add(new JLabel("Posicion:"));
         txtPosicion = new JTextField();
         contentPane.add(txtPosicion);
 
-        contentPane.add(new JLabel("Número:"));
+        contentPane.add(new JLabel("Numero:"));
         spNumJugador = new JSpinner(new SpinnerNumberModel(1, 1, 99, 1));
         contentPane.add(spNumJugador);
 
@@ -122,7 +122,7 @@ public class Registrarjugador extends JFrame {
         try {
             
             if (txtNombre.getText().isEmpty() || txtPosicion.getText().isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Nombre y posición son campos obligatorios", 
+                JOptionPane.showMessageDialog(this, "Nombre y posicion son campos obligatorios", 
                                            "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
@@ -133,13 +133,12 @@ public class Registrarjugador extends JFrame {
                 return;
             }
 
-            // Crear el objeto Jugador
             Jugador jugador = new Jugador(
                 txtNombre.getText(),
                 (int) spEdad.getValue(),
                 txtPosicion.getText(),
                 (int) spNumJugador.getValue(),
-                null, // Estadística (puede ser null inicialmente)
+                null, 
                 (int) spEstatura.getValue(),
                 txtSangre.getText(),
                 ((Double) spPeso.getValue()).floatValue(),
@@ -155,12 +154,12 @@ public class Registrarjugador extends JFrame {
                 JOptionPane.showMessageDialog(this, 
                     "Jugador registrado exitosamente en " + nombreEquipo + "!\n" +
                     "Nombre: " + jugador.getNombreJugador() + "\n" +
-                    "Número: " + jugador.getNumJugador(),
+                    "Numero: " + jugador.getNumJugador(),
                     "Registro Exitoso", JOptionPane.INFORMATION_MESSAGE);
                 limpiarCampos();
             } else {
                 JOptionPane.showMessageDialog(this, 
-                    "Error al registrar el jugador. Verifique que el número no esté repetido.", 
+                    "Error al registrar el jugador. Verifique que el numero no este repetido.", 
                     "Error", JOptionPane.ERROR_MESSAGE);
             }
         } catch (Exception ex) {

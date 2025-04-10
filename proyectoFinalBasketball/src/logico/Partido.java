@@ -74,6 +74,8 @@ public class Partido implements Serializable {
         this.puntosLocal = puntosLocal;
         this.puntosVisitante = puntosVisitante;
         this.resultado = puntosLocal + "-" + puntosVisitante;
+        
+        SerieNacionaldeBasket.getInstance().guardarDatos();
     }
     public void cancelarPartido() {
         this.estado = "Cancelado";

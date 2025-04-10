@@ -89,4 +89,10 @@ public class Jugador implements Serializable {
 		this.marcapromotora = marcapromotora;
 	}
 	
+	public String toString() {
+		return nombreJugador;
+		
+		
+	}
+	
 }

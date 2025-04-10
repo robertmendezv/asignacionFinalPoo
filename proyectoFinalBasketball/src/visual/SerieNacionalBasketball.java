@@ -72,7 +72,7 @@ public class SerieNacionalBasketball {
 		} catch (IOException e) {
 			JOptionPane.showMessageDialog(null, 
 					"Error al cargar la imagen: " + e.getMessage() + 
-					"\nAsegï¿½rate que la imagen estï¿½ en la carpeta Imagenes al lado de src",
+					"\nAsegurate que la imagen esta en la carpeta Imagenes al lado de src",
 					"Error", JOptionPane.ERROR_MESSAGE);
 		}
 	}
@@ -93,7 +93,7 @@ public class SerieNacionalBasketball {
             public void windowClosing(java.awt.event.WindowEvent e) {
                 int opcion = JOptionPane.showConfirmDialog(
                     frmSerieNacionalDe,
-                    "¿Está seguro que desea salir? Todos los datos no guardados se perderán.",
+                    "Esta seguro que desea salir? Todos los datos no guardados se perderan.",
                     "Confirmar salida",
                     JOptionPane.YES_NO_OPTION,
                     JOptionPane.QUESTION_MESSAGE);
@@ -103,7 +103,7 @@ public class SerieNacionalBasketball {
                         SerieNacionaldeBasket.getInstance().guardarDatos();
                         JOptionPane.showMessageDialog(frmSerieNacionalDe,
                             "Datos guardados exitosamente",
-                            "Información",
+                            "Informacion",
                             JOptionPane.INFORMATION_MESSAGE);
                         frmSerieNacionalDe.dispose();
                     } catch (Exception ex) {
@@ -139,7 +139,7 @@ public class SerieNacionalBasketball {
 		JMenuBar menuBar = new JMenuBar();
 		frmSerieNacionalDe.setJMenuBar(menuBar);
 
-		// Menï¿½ Equipos
+		// Menu Equipos
 		JMenu mnEquipos = new JMenu("Equipos");
 		menuBar.add(mnEquipos);
 
@@ -163,7 +163,7 @@ public class SerieNacionalBasketball {
 		});
 		mnEquipos.add(mntmListarEquipos);
 
-		// Menï¿½ Jugadores
+		// Menu Jugadores
 		JMenu mnJugadores = new JMenu("Jugadores");
 		menuBar.add(mnJugadores);
 
@@ -187,11 +187,11 @@ public class SerieNacionalBasketball {
 		});
 		mnJugadores.add(mntmListarJugadores);
 
-		// Menú Estadísticas
-		JMenu mnEstadisticas = new JMenu("Estadísticas");
+		// Menu Estadisticas
+		JMenu mnEstadisticas = new JMenu("Estadisticas");
 		menuBar.add(mnEstadisticas);
 
-		JMenuItem mntmRegistrarEstadisticas = new JMenuItem("Registrar Estadísticas");
+		JMenuItem mntmRegistrarEstadisticas = new JMenuItem("Registrar Estadisticas");
 		mntmRegistrarEstadisticas.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				RegEstadisticasJugador dialog = new RegEstadisticasJugador();
@@ -201,7 +201,7 @@ public class SerieNacionalBasketball {
 		});
 		mnEstadisticas.add(mntmRegistrarEstadisticas);
 
-		JMenuItem mntmTablaEstadisticas = new JMenuItem("Tabla de Estadísticas");
+		JMenuItem mntmTablaEstadisticas = new JMenuItem("Tabla de Estadisticas");
 		mntmTablaEstadisticas.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				ListadoEstadisticasGeneral dialog = new ListadoEstadisticasGeneral();
@@ -211,7 +211,7 @@ public class SerieNacionalBasketball {
 		});
 		mnEstadisticas.add(mntmTablaEstadisticas);
 
-		// Menï¿½ Partidos
+		// Menu Partidos
 		JMenu mnPartidos = new JMenu("Partidos");
 		menuBar.add(mnPartidos);
 
@@ -295,25 +295,10 @@ public class SerieNacionalBasketball {
 
 		JOptionPane.showMessageDialog(frmSerieNacionalDe,
 				"Seleccione un partido del calendario para simular",
-				"Informaciï¿½n",
+				"Informacion",
 				JOptionPane.INFORMATION_MESSAGE);
 	}
 
-	
-	/* no se usa, hay una funcion igual en la controladora
-	private void guardarDatos() {
-		try (ObjectOutputStream out = new ObjectOutputStream(
-				new FileOutputStream("serie_nacional.dat"))) {
-			out.writeObject(SerieNacionaldeBasket.getInstance());
-		} catch (IOException e) {
-			JOptionPane.showMessageDialog(frmSerieNacionalDe, 
-					"Error al guardar los datos: " + e.getMessage(),
-					"Error", JOptionPane.ERROR_MESSAGE);
-		}
-	}
-	*/
-	
-	
 	
 	public void setVisible(boolean visible) {
 		frmSerieNacionalDe.setVisible(visible);

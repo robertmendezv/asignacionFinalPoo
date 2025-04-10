@@ -33,32 +33,14 @@ public class Calendario extends JFrame {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
         
-        cargarImagen();
         initComponents();
         cargarEquipos();
         cargarPartidos();
     }
 
-    private void cargarImagen() {
-        try {
-            String projectPath = System.getProperty("user.dir");
-            String imagePath = projectPath + File.separator + "Imagenes" + File.separator + "calendar.png";
-            File imageFile = new File(imagePath);
-            
-            if (imageFile.exists()) {
-                Image img = ImageIO.read(imageFile);
-                ImageIcon icon = new ImageIcon(img.getScaledInstance(100, 100, Image.SCALE_SMOOTH));
-                JLabel lblImagen = new JLabel(icon);
-                lblImagen.setBounds(10, 10, 100, 100);
-                getContentPane().add(lblImagen, BorderLayout.WEST);
-            }
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(this, 
-                "Error al cargar la imagen: " + e.getMessage(), 
-                "Error", JOptionPane.ERROR_MESSAGE);
-        }
-    }
+    
 
+    
     private void initComponents() {
         JPanel panelSuperior = new JPanel(new GridLayout(0, 2, 10, 10));
         panelSuperior.setBorder(BorderFactory.createTitledBorder("Nuevo Partido"));
@@ -151,7 +133,7 @@ public class Calendario extends JFrame {
         try {
           
             if (dateChooser.getDate() == null) {
-                mostrarError("Seleccione una fecha válida");
+                mostrarError("Seleccione una fecha valida");
                 return;
             }
 
@@ -163,7 +145,7 @@ public class Calendario extends JFrame {
 
       
             if (cbEquipoLocal.getSelectedItem().equals(cbEquipoVisitante.getSelectedItem())) {
-                mostrarError("Un equipo no puede jugar contra sí mismo");
+                mostrarError("Un equipo no puede jugar contra si mismo");
                 return;
             }
 
@@ -190,7 +172,7 @@ public class Calendario extends JFrame {
             Equipo visitante = SerieNacionaldeBasket.getInstance().buscarEquipoPorNombre(nombreVisitante);
 
             if (local == null || visitante == null) {
-                mostrarError("No se encontró uno de los equipos");
+                mostrarError("No se encontro uno de los equipos");
                 return;
             }
 
@@ -202,7 +184,7 @@ public class Calendario extends JFrame {
                 cargarPartidos();
                 JOptionPane.showMessageDialog(this, 
                     "Partido agregado correctamente", 
-                    "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                    "ï¿½xito", JOptionPane.INFORMATION_MESSAGE);
                 
         
                 dateChooser.setDate(null);
@@ -226,7 +208,7 @@ public class Calendario extends JFrame {
         }
         
         int confirmacion = JOptionPane.showConfirmDialog(this, 
-            "¿Está seguro de eliminar este partido?", "Confirmar eliminación", 
+            "Esta seguro de eliminar este partido?", "Confirmar eliminacion", 
             JOptionPane.YES_NO_OPTION);
         
         if (confirmacion == JOptionPane.YES_OPTION) {
@@ -270,7 +252,7 @@ public class Calendario extends JFrame {
         
         if (partido.getEstado().equals("En juego")) {
             int opcion = JOptionPane.showConfirmDialog(this, 
-                "Este partido ya está en juego. ¿Desea continuar la simulación?", 
+                "Este partido ya esta en juego. Desea continuar la simulacion?", 
                 "Partido en curso", JOptionPane.YES_NO_OPTION);
             
             if (opcion != JOptionPane.YES_OPTION) {

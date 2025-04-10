@@ -99,7 +99,7 @@ public class Login extends JFrame {
         panelForm.add(txtUsuario);
         txtUsuario.setColumns(10);
         
-        JLabel lblNewLabel_1 = new JLabel("Contraseña:");
+        JLabel lblNewLabel_1 = new JLabel("Contrasena:");
         lblNewLabel_1.setBounds(12, 88, 93, 20);
         panelForm.add(lblNewLabel_1);
         
@@ -111,7 +111,7 @@ public class Login extends JFrame {
         btnNewButton.setBounds(238, 64, 115, 29);
         panelForm.add(btnNewButton);
         
-        JButton btnRegistrate = new JButton("¿No tienes cuenta? Regístrate");
+        JButton btnRegistrate = new JButton("No tienes cuenta? Registrate");
         btnRegistrate.setBounds(83, 182, 245, 29);
         panelForm.add(btnRegistrate);
 
@@ -129,7 +129,7 @@ public class Login extends JFrame {
                 if (username.isEmpty() || password.isEmpty()) {
                     JOptionPane.showMessageDialog(Login.this, 
                         "Por favor complete todos los campos", 
-                        "Campos vacíos", 
+                        "Campos vacios", 
                         JOptionPane.WARNING_MESSAGE);
                     return;
                 }
@@ -142,8 +142,8 @@ public class Login extends JFrame {
                     frame.setVisible(true);
                 } else {
                     JOptionPane.showMessageDialog(Login.this, 
-                        "Usuario o contraseña incorrectos", 
-                        "Error de autenticación", 
+                        "Usuario o contrasena incorrectos", 
+                        "Error de autenticacion", 
                         JOptionPane.ERROR_MESSAGE);
                     passwordFieldContrasena.setText("");
                     txtUsuario.requestFocus();
