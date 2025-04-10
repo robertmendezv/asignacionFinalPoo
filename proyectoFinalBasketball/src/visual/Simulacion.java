@@ -70,7 +70,7 @@ public class Simulacion extends JFrame implements Serializable {
         
     
         JPanel panelEstadisticas = new JPanel(new GridLayout(4, 3, 10, 10));
-        panelEstadisticas.setBorder(BorderFactory.createTitledBorder("Registrar Estadísticas por Jugador"));
+        panelEstadisticas.setBorder(BorderFactory.createTitledBorder("Registrar estadisticas por jugador"));
         
       
         SpinnerNumberModel modelPuntos = new SpinnerNumberModel(1, 1, 3, 1);
@@ -79,34 +79,34 @@ public class Simulacion extends JFrame implements Serializable {
         panelEstadisticas.add(new JLabel("Puntos:"));
         spinnerPuntos = new JSpinner(modelPuntos);
         panelEstadisticas.add(spinnerPuntos);
-        JButton btnSelPuntos = new JButton("Seleccionar Jugador");
+        JButton btnSelPuntos = new JButton("Seleccionar jugador");
         panelEstadisticas.add(btnSelPuntos);
         
  
         panelEstadisticas.add(new JLabel("Asistencias:"));
         spinnerAsistencias = new JSpinner(modelEstadisticas);
         panelEstadisticas.add(spinnerAsistencias);
-        JButton btnSelAsistencias = new JButton("Seleccionar Jugador");
+        JButton btnSelAsistencias = new JButton("Seleccionar jugador");
         panelEstadisticas.add(btnSelAsistencias);
         
       
         panelEstadisticas.add(new JLabel("Rebotes:"));
         spinnerRebotes = new JSpinner(modelEstadisticas);
         panelEstadisticas.add(spinnerRebotes);
-        JButton btnSelRebotes = new JButton("Seleccionar Jugador");
+        JButton btnSelRebotes = new JButton("Seleccionar jugador");
         panelEstadisticas.add(btnSelRebotes);
         
     
         panelEstadisticas.add(new JLabel("Acciones Defensivas:"));
         spinnerDefensas = new JSpinner(modelEstadisticas);
         panelEstadisticas.add(spinnerDefensas);
-        JButton btnSelDefensas = new JButton("Seleccionar Jugador");
+        JButton btnSelDefensas = new JButton("Seleccionar jugador");
         panelEstadisticas.add(btnSelDefensas);
         
         JPanel panelBotones = new JPanel(new GridLayout(1, 3, 10, 10));
-        btnLocal = new JButton("Registrar para Local");
-        btnVisitante = new JButton("Registrar para Visitante");
-        btnFinalizar = new JButton("Finalizar Partido");
+        btnLocal = new JButton("Registrar para local");
+        btnVisitante = new JButton("Registrar para visitante");
+        btnFinalizar = new JButton("Fin");
         panelBotones.add(btnLocal);
         panelBotones.add(btnVisitante);
         panelBotones.add(btnFinalizar);
