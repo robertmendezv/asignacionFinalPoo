@@ -5,6 +5,7 @@ import java.awt.FlowLayout;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
@@ -29,6 +30,9 @@ public class ListadoEquipos extends JDialog {
 	private static DefaultTableModel model;
 	private static Object[] row;
 	private Equipo miEquipo = null;
+	private JButton btnEliminar;
+	private JButton btnModificar;
+	private JButton btnVerEquipo;
 
 	/**
 	 * Launch the application.
@@ -71,6 +75,9 @@ public class ListadoEquipos extends JDialog {
 						public void mouseClicked(MouseEvent e) {
 							int index = table.getSelectedRow();
 							if(index!= -1) {
+								btnEliminar.setEnabled(true);
+								btnModificar.setEnabled(true);
+								btnVerEquipo.setEnabled(true);
 								miEquipo = SerieNacionaldeBasket.getInstance().buscarEquipoPorNombre(table.getValueAt(index, 0).toString());
 							}
 						}
@@ -86,10 +93,46 @@ public class ListadoEquipos extends JDialog {
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
-				JButton okButton = new JButton("OK");
-				okButton.setActionCommand("OK");
-				buttonPane.add(okButton);
-				getRootPane().setDefaultButton(okButton);
+				btnEliminar = new JButton("Eliminar");
+				btnEliminar.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						int option = JOptionPane.showConfirmDialog(null, "¿Está seguro que desea eliminar el equipo con nombre: " +miEquipo.getNombreEquipo()+ "?", "Eliminar", JOptionPane.WARNING_MESSAGE);
+						if(JOptionPane.YES_OPTION == option) {
+							SerieNacionaldeBasket.getInstance().eliminarEquipo(miEquipo.getNombreEquipo());
+							loadSupply();
+						}
+					}
+				});
+				{
+					btnModificar = new JButton("Modificar");
+					btnModificar.addActionListener(new ActionListener() {
+						public void actionPerformed(ActionEvent e) {
+							RegistrarEquipo update = new RegistrarEquipo(miEquipo);
+							update.setModal(true);
+							update.setVisible(true);
+						}
+					});
+					{
+						btnVerEquipo = new JButton("Ver Equipo");
+						btnVerEquipo.addActionListener(new ActionListener() {
+							public void actionPerformed(ActionEvent arg0) {
+								if(miEquipo != null) {
+									VerEquipo dialog = new VerEquipo(miEquipo);
+									dialog.setModal(true);
+									dialog.setVisible(true);
+								}
+							}
+						});
+						btnVerEquipo.setEnabled(false);
+						buttonPane.add(btnVerEquipo);
+					}
+					btnModificar.setEnabled(false);
+					buttonPane.add(btnModificar);
+				}
+				btnEliminar.setEnabled(false);
+				btnEliminar.setActionCommand("OK");
+				buttonPane.add(btnEliminar);
+				getRootPane().setDefaultButton(btnEliminar);
 			}
 			{
 				JButton cancelButton = new JButton("Cancelar");

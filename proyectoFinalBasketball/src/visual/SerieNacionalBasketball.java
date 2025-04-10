@@ -93,7 +93,7 @@ public class SerieNacionalBasketball {
             public void windowClosing(java.awt.event.WindowEvent e) {
                 int opcion = JOptionPane.showConfirmDialog(
                     frmSerieNacionalDe,
-                    "Â¿EstÃ¡ seguro que desea salir? Todos los datos no guardados se perderÃ¡n.",
+                    "¿Está seguro que desea salir? Todos los datos no guardados se perderán.",
                     "Confirmar salida",
                     JOptionPane.YES_NO_OPTION,
                     JOptionPane.QUESTION_MESSAGE);
@@ -103,7 +103,7 @@ public class SerieNacionalBasketball {
                         SerieNacionaldeBasket.getInstance().guardarDatos();
                         JOptionPane.showMessageDialog(frmSerieNacionalDe,
                             "Datos guardados exitosamente",
-                            "InformaciÃ³n",
+                            "Información",
                             JOptionPane.INFORMATION_MESSAGE);
                         frmSerieNacionalDe.dispose();
                     } catch (Exception ex) {
@@ -187,11 +187,11 @@ public class SerieNacionalBasketball {
 		});
 		mnJugadores.add(mntmListarJugadores);
 
-		// Menï¿½ Estadï¿½sticas
-		JMenu mnEstadisticas = new JMenu("Estadï¿½sticas");
+		// Menú Estadísticas
+		JMenu mnEstadisticas = new JMenu("Estadísticas");
 		menuBar.add(mnEstadisticas);
 
-		JMenuItem mntmRegistrarEstadisticas = new JMenuItem("Registrar Estadï¿½sticas");
+		JMenuItem mntmRegistrarEstadisticas = new JMenuItem("Registrar Estadísticas");
 		mntmRegistrarEstadisticas.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				RegEstadisticasJugador dialog = new RegEstadisticasJugador();
@@ -201,7 +201,7 @@ public class SerieNacionalBasketball {
 		});
 		mnEstadisticas.add(mntmRegistrarEstadisticas);
 
-		JMenuItem mntmTablaEstadisticas = new JMenuItem("Tabla de Estadisticas");
+		JMenuItem mntmTablaEstadisticas = new JMenuItem("Tabla de Estadísticas");
 		mntmTablaEstadisticas.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				ListadoEstadisticasGeneral dialog = new ListadoEstadisticasGeneral();
@@ -210,10 +210,6 @@ public class SerieNacionalBasketball {
 			}
 		});
 		mnEstadisticas.add(mntmTablaEstadisticas);
-
-		// Menï¿½ Lesiones
-		JMenu mnLesiones = new JMenu("Lesiones");
-		menuBar.add(mnLesiones);
 
 		// Menï¿½ Partidos
 		JMenu mnPartidos = new JMenu("Partidos");
