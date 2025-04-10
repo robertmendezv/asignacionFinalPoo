@@ -2,6 +2,7 @@ package visual;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -10,9 +11,7 @@ import javax.swing.table.DefaultTableModel;
 import logico.Partido;
 import logico.SerieNacionaldeBasket;
 import com.toedter.calendar.JDateChooser;
-import com.toedter.calendar.JCalendar;
 import java.util.Date;
-import com.toedter.calendar.IDateEditor;
 import logico.Equipo;
 import java.time.ZoneId;
 import java.io.File;
@@ -24,28 +23,29 @@ public class Calendario extends JFrame {
     private DefaultTableModel modeloTabla;
     private JComboBox<String> cbEquipoLocal, cbEquipoVisitante;
     private JSpinner spinnerHora;
-    private JButton btnAgregar, btnEliminar;
-    private JDateChooser dateChooser; 
+    private JButton btnAgregar, btnEliminar, btnSimular;
+    private JDateChooser dateChooser;
     private static final long serialVersionUID = 1L;
-
-    
 
     public Calendario() {
         setTitle("Calendario de Partidos");
-        setSize(800, 500);
+        setSize(900, 600);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
         
+        cargarImagen();
+        initComponents();
+        cargarEquipos();
+        cargarPartidos();
+    }
+
+    private void cargarImagen() {
         try {
             String projectPath = System.getProperty("user.dir");
             String imagePath = projectPath + File.separator + "Imagenes" + File.separator + "calendar.png";
             File imageFile = new File(imagePath);
             
-            if (!imageFile.exists()) {
-                JOptionPane.showMessageDialog(this, 
-                    "No se encontró la imagen en:\n" + imagePath, 
-                    "Error", JOptionPane.ERROR_MESSAGE);
-            } else {
+            if (imageFile.exists()) {
                 Image img = ImageIO.read(imageFile);
                 ImageIcon icon = new ImageIcon(img.getScaledInstance(100, 100, Image.SCALE_SMOOTH));
                 JLabel lblImagen = new JLabel(icon);
@@ -53,22 +53,17 @@ public class Calendario extends JFrame {
                 getContentPane().add(lblImagen, BorderLayout.WEST);
             }
         } catch (IOException e) {
-            e.printStackTrace();
             JOptionPane.showMessageDialog(this, 
                 "Error al cargar la imagen: " + e.getMessage(), 
                 "Error", JOptionPane.ERROR_MESSAGE);
         }
-        
-        initComponents();
-        cargarEquipos();
-        cargarPartidos();
     }
 
     private void initComponents() {
-
         JPanel panelSuperior = new JPanel(new GridLayout(0, 2, 10, 10));
         panelSuperior.setBorder(BorderFactory.createTitledBorder("Nuevo Partido"));
         
+  
         panelSuperior.add(new JLabel("Fecha:"));
         dateChooser = new JDateChooser();
         dateChooser.setDateFormatString("dd/MM/yyyy");
@@ -80,8 +75,7 @@ public class Calendario extends JFrame {
         spinnerHora.setEditor(timeEditor);
         panelSuperior.add(spinnerHora);
         
-        JLabel label = new JLabel("Equipo Local:");
-        panelSuperior.add(label);
+        panelSuperior.add(new JLabel("Equipo Local:"));
         cbEquipoLocal = new JComboBox<>();
         panelSuperior.add(cbEquipoLocal);
         
@@ -97,6 +91,11 @@ public class Calendario extends JFrame {
         btnEliminar.addActionListener(e -> eliminarPartido());
         panelSuperior.add(btnEliminar);
         
+        btnSimular = new JButton("Simular Partido");
+        btnSimular.addActionListener(e -> simularPartido());
+        panelSuperior.add(btnSimular);
+
+     
         modeloTabla = new DefaultTableModel(
             new Object[]{"Fecha", "Hora", "Local", "Visitante", "Estado"}, 0) {
             @Override
@@ -110,7 +109,6 @@ public class Calendario extends JFrame {
         
         JScrollPane scrollPane = new JScrollPane(tablaPartidos);
         scrollPane.setBorder(BorderFactory.createTitledBorder("Partidos Programados"));
-        
         
         getContentPane().setLayout(new BorderLayout(10, 10));
         getContentPane().add(panelSuperior, BorderLayout.NORTH);
@@ -151,79 +149,71 @@ public class Calendario extends JFrame {
 
     private void agregarPartido() {
         try {
-           
+          
             if (dateChooser.getDate() == null) {
-                JOptionPane.showMessageDialog(this, 
-                    "Seleccione una fecha válida", 
-                    "Error", JOptionPane.ERROR_MESSAGE);
+                mostrarError("Seleccione una fecha válida");
                 return;
             }
 
-    
+       
             if (cbEquipoLocal.getSelectedIndex() <= 0 || cbEquipoVisitante.getSelectedIndex() <= 0) {
-                JOptionPane.showMessageDialog(this, 
-                    "Seleccione ambos equipos", 
-                    "Error", JOptionPane.ERROR_MESSAGE);
+                mostrarError("Seleccione ambos equipos");
                 return;
             }
 
-    
+      
             if (cbEquipoLocal.getSelectedItem().equals(cbEquipoVisitante.getSelectedItem())) {
-                JOptionPane.showMessageDialog(this, 
-                    "Un equipo no puede jugar contra sí mismo", 
-                    "Error", JOptionPane.ERROR_MESSAGE);
+                mostrarError("Un equipo no puede jugar contra sí mismo");
                 return;
             }
 
-         
+        
             LocalDate fecha = dateChooser.getDate().toInstant()
                               .atZone(ZoneId.systemDefault())
                               .toLocalDate();
-
-         
+            
             LocalTime hora = ((Date) spinnerHora.getValue()).toInstant()
                              .atZone(ZoneId.systemDefault())
                              .toLocalTime();
 
-       
+           
+            if (fecha.isBefore(LocalDate.now())) {
+                mostrarError("No se pueden programar partidos en fechas pasadas");
+                return;
+            }
+
+   
             String nombreLocal = (String) cbEquipoLocal.getSelectedItem();
             String nombreVisitante = (String) cbEquipoVisitante.getSelectedItem();
             
             Equipo local = SerieNacionaldeBasket.getInstance().buscarEquipoPorNombre(nombreLocal);
             Equipo visitante = SerieNacionaldeBasket.getInstance().buscarEquipoPorNombre(nombreVisitante);
 
-            
             if (local == null || visitante == null) {
-                JOptionPane.showMessageDialog(this, 
-                    "No se encontró uno de los equipos", 
-                    "Error", JOptionPane.ERROR_MESSAGE);
+                mostrarError("No se encontró uno de los equipos");
                 return;
             }
 
-           
+    
             Partido nuevoPartido = new Partido(local, visitante, fecha, hora);
             boolean agregado = SerieNacionaldeBasket.getInstance().agregarPartido(nuevoPartido);
 
             if (agregado) {
-                
                 cargarPartidos();
                 JOptionPane.showMessageDialog(this, 
                     "Partido agregado correctamente", 
                     "Éxito", JOptionPane.INFORMATION_MESSAGE);
                 
+        
                 dateChooser.setDate(null);
                 cbEquipoLocal.setSelectedIndex(0);
                 cbEquipoVisitante.setSelectedIndex(0);
             } else {
-                JOptionPane.showMessageDialog(this, 
-                    "Ya existe un partido programado para esa fecha y hora", 
-                    "Error", JOptionPane.WARNING_MESSAGE);
+                mostrarError("Ya existe un partido programado para esa fecha y hora");
             }
 
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(this, 
-                "Error al agregar partido: " + ex.getMessage(), 
-                "Error", JOptionPane.ERROR_MESSAGE);
+            mostrarError("Error al agregar partido: " + ex.getMessage());
             ex.printStackTrace();
         }
     }
@@ -231,7 +221,7 @@ public class Calendario extends JFrame {
     private void eliminarPartido() {
         int filaSeleccionada = tablaPartidos.getSelectedRow();
         if (filaSeleccionada == -1) {
-            JOptionPane.showMessageDialog(this, "Seleccione un partido para eliminar", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            mostrarAdvertencia("Seleccione un partido para eliminar");
             return;
         }
         
@@ -242,13 +232,78 @@ public class Calendario extends JFrame {
         if (confirmacion == JOptionPane.YES_OPTION) {
             ArrayList<Partido> partidos = SerieNacionaldeBasket.getInstance().getPartidos();
             if (filaSeleccionada < partidos.size()) {
-                SerieNacionaldeBasket.getInstance().eliminarPartido(partidos.get(filaSeleccionada));
+                Partido partido = partidos.get(filaSeleccionada);
+                
+           
+                if (partido.getEstado().equals("En juego") || partido.getEstado().equals("Finalizado")) {
+                    mostrarError("No se pueden eliminar partidos en juego o finalizados");
+                    return;
+                }
+                
+                SerieNacionaldeBasket.getInstance().eliminarPartido(partido);
                 cargarPartidos();
             }
         }
     }
     
+    private void simularPartido() {
+        int filaSeleccionada = tablaPartidos.getSelectedRow();
+        if (filaSeleccionada == -1) {
+            mostrarAdvertencia("Seleccione un partido para simular");
+            return;
+        }
+        
+        ArrayList<Partido> partidos = SerieNacionaldeBasket.getInstance().getPartidos();
+        Partido partido = partidos.get(filaSeleccionada);
+        
     
+        if (!partido.getFecha().equals(LocalDate.now())) {
+            mostrarError("Solo se pueden simular partidos programados para hoy");
+            return;
+        }
+        
+      
+        if (partido.getEstado().equals("Finalizado")) {
+            mostrarError("Este partido ya ha finalizado");
+            return;
+        }
+        
+        if (partido.getEstado().equals("En juego")) {
+            int opcion = JOptionPane.showConfirmDialog(this, 
+                "Este partido ya está en juego. ¿Desea continuar la simulación?", 
+                "Partido en curso", JOptionPane.YES_NO_OPTION);
+            
+            if (opcion != JOptionPane.YES_OPTION) {
+                return;
+            }
+        }
+        
+  
+        EventQueue.invokeLater(() -> {
+            Simulacion simulacion = new Simulacion(partido);
+            simulacion.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosed(WindowEvent e) {
+                    cargarPartidos();
+                }
+            });
+            simulacion.setVisible(true);
+        });
+        
+    
+        partido.setEstado("En juego");
+        cargarPartidos();
+    }
+    
+   
+    private void mostrarError(String mensaje) {
+        JOptionPane.showMessageDialog(this, mensaje, "Error", JOptionPane.ERROR_MESSAGE);
+    }
+    
+    private void mostrarAdvertencia(String mensaje) {
+        JOptionPane.showMessageDialog(this, mensaje, "Advertencia", JOptionPane.WARNING_MESSAGE);
+    }
+
     public static void main(String[] args) {
         EventQueue.invokeLater(() -> {
             try {

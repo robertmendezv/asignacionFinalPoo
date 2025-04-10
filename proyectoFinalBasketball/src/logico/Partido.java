@@ -82,4 +82,13 @@ public class Partido implements Serializable {
         return equipoLocal.getMisjugadores().contains(jugador) || 
                equipoVisitante.getMisjugadores().contains(jugador);
     }
+    
+    public boolean esSimulable() {
+        return this.fecha.equals(LocalDate.now()) && 
+               !this.estado.equals("Finalizado");
+    }
+    
+    public boolean esEliminable() {
+        return this.estado.equals("Programado");
+    }
 }

@@ -21,10 +21,21 @@ public class Simulacion extends JFrame implements Serializable {
     private JButton btnLocal, btnVisitante, btnFinalizar;
 
     public Simulacion(Partido partido) {
+       
         this.partidoActual = partido;
         this.equipoLocal = partido.getEquipoLocal();
         this.equipoVisitante = partido.getEquipoVisitante();
         
+        
+        if (!partido.esSimulable()) {
+            JOptionPane.showMessageDialog(null, 
+                "Este partido no se puede simular", 
+                "Error", JOptionPane.ERROR_MESSAGE);
+            this.dispose(); 
+            return; 
+        }
+        
+    
         setTitle("Simulador de Partido: " + equipoLocal.getNombreEquipo() + " vs " + equipoVisitante.getNombreEquipo());
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setBounds(100, 100, 900, 600);
@@ -32,7 +43,6 @@ public class Simulacion extends JFrame implements Serializable {
         contentPane.setBorder(new EmptyBorder(10, 10, 10, 10));
         setContentPane(contentPane);
         contentPane.setLayout(new BorderLayout(10, 10));
-        
         partidoActual.iniciarPartido();
         initComponents();
     }
@@ -234,7 +244,9 @@ public class Simulacion extends JFrame implements Serializable {
     
     private void finalizarPartido() {
         partidoActual.finalizarPartido(scoreLocal, scoreVisitante);
-        JOptionPane.showMessageDialog(this, "¡Partido finalizado! Resultado: " + scoreLocal + "-" + scoreVisitante);
-        dispose();
+        partidoActual.setEstado("Finalizado"); 
+        JOptionPane.showMessageDialog(this, 
+            "¡Partido finalizado! Resultado: " + scoreLocal + "-" + scoreVisitante);
+        this.dispose();
     }
 }
